@@ -10,54 +10,26 @@ public class ProceduralMeshFactory : MonoBehaviour
     private GenericGrid<GridObject> grid;
     private DropManager dropManager;
 
-    private MeshShape lShape = new MeshShape()
-    {
-        Vertices = new Vector3[] {
-            Vector3.zero * 8.0f, Vector3.right * 8.0f * 3, Vector3.up * 8.0f, new Vector3(3f, 1f, 0f) * 8.0f,
-            new Vector3(2f, 0, 0) * 8.0f, new Vector3(2f, -1f, 0) * 8.0f, new Vector3(3f, -1f, 0) * 8.0f
-        },
-
-        Triangles = new int[] {
-            0, 2, 1, 1, 2, 3, 1, 6, 5, 1, 5, 4
-        },
-
-        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(1, 0), new IntPositions(2, 0), new IntPositions(2, -1) }
-    };
-
-    private MeshShape line1Shape = new MeshShape()
-    {
-        Vertices = new Vector3[] {
-            Vector3.zero * 8.0f, Vector3.right * 8.0f, Vector3.up * 8.0f, new Vector3(1f, 1f, 0f) * 8.0f
-        },
-
-        Triangles = new int[] {
-            0, 2, 1, 1, 2, 3
-        },
-
-        Positions = new IntPositions[] { new IntPositions(0, 0) }
-    };
-
-    //private MeshShape line3Shape = new MeshShape()
-    //{
-    //    Vertices = new Vector3[] {
-    //        Vector3.zero * 8.0f, Vector3.right * 8.0f * 3, Vector3.up * 8.0f, new Vector3(3f, 1f, 0f) * 8.0f
-    //    },
-
-    //    Triangles = new int[] {
-    //        0, 2, 1, 1, 2, 3, 1
-    //    },
-
-    //    Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(1, 0), new IntPositions(2, 0) }
-    //};
-
+    private RotateableMeshShape lShape;
+    private RotateableMeshShape line1Shape;
+    private RotateableMeshShape line2Shape;
     public RotateableMeshShape line3Shape;
+    public RotateableMeshShape square2Shape;
+    public RotateableMeshShape square3Shape;
+    public RotateableMeshShape square4Shape;
 
     public void Construct(GenericGrid<GridObject> grid, DropManager dropManager)
     {
         this.grid = grid;
         this.dropManager = dropManager;
 
-        line3Shape = new Line3ShapeCreator().CreateShape();
+        line3Shape = new LineShapeCreator(3).CreateShape();
+        line2Shape = new LineShapeCreator(2).CreateShape();
+        line1Shape = new LineShapeCreator(1).CreateShape();
+        lShape = new LShapeCreator().CreateShape();
+        square2Shape = new SquareShapeCreator(2).CreateShape();
+        square3Shape = new SquareShapeCreator(3).CreateShape();
+        square4Shape = new SquareShapeCreator(4).CreateShape();
     }
 
     private void Awake()
@@ -65,10 +37,19 @@ public class ProceduralMeshFactory : MonoBehaviour
         quadProceduralPrefab.gameObject.SetActive(false);
     }
 
-    public ProceduralLShape CreateLShape()
+    public ProceduralLShape CreateLShape(ShapeDirection direction)
     {
-        return CreateShape(() => lShape);
+        return CreateShape(() => lShape.GetMeshShape(direction));
+    }
 
+    public ProceduralLShape CreateLine1Shape(ShapeDirection direction)
+    {
+        return CreateShape(() => line1Shape.GetMeshShape(direction));
+    }
+
+    public ProceduralLShape CreateLine2Shape(ShapeDirection direction)
+    {
+        return CreateShape(() => line2Shape.GetMeshShape(direction));
     }
 
     public ProceduralLShape CreateLine3Shape(ShapeDirection direction)
@@ -76,10 +57,19 @@ public class ProceduralMeshFactory : MonoBehaviour
         return CreateShape(() => line3Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateQuad()
+    public ProceduralLShape CreateSquare2Shape(ShapeDirection direction)
     {
-        return CreateShape(() => line1Shape);
+        return CreateShape(() => square2Shape.GetMeshShape(direction));
+    }
 
+    public ProceduralLShape CreateSquare3Shape(ShapeDirection direction)
+    {
+        return CreateShape(() => square3Shape.GetMeshShape(direction));
+    }
+
+    public ProceduralLShape CreateSquare4Shape(ShapeDirection direction)
+    {
+        return CreateShape(() => square4Shape.GetMeshShape(direction));
     }
 
     private ProceduralLShape CreateShape(Func<MeshShape> getMeshShape)

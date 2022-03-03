@@ -24,6 +24,6 @@ public class DropManager : MonoBehaviour
         
         Destroy(dragDrop.gameObject);
 
-        meshFactory.CreateLine3Shape(ShapeDirection.Right);
+        meshFactory.CreateLine3Shape(ShapeDirection.Up);
     }
 }

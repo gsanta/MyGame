@@ -16,6 +16,6 @@ class Injector : MonoBehaviour
         gridRenderer.Construct(grid);
         dropManager.Construct(grid, gridFactory, proceduralMeshFactory);
         proceduralMeshFactory.Construct(grid, dropManager);
-        proceduralMeshFactory.CreateLShape();
+        proceduralMeshFactory.CreateLine2Shape(ShapeDirection.Left);
     }
 }
