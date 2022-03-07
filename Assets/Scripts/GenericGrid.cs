@@ -65,7 +65,7 @@ public class GenericGrid<TGridObject>
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
             gridArray[x, y] = value;
-            debugTextArray[x, y].text = gridArray[x, y].ToString();
+            //debugTextArray[x, y].text = gridArray[x, y].ToString();
         }
     }
 
@@ -81,6 +81,30 @@ public class GenericGrid<TGridObject>
         int x, y;
         GetXY(worldPosition, out x, out y);
         return GetGridObject(x, y);
+    }
+
+    public TGridObject[] GetColumnObjects(int x)
+    {
+        TGridObject[] row = new TGridObject[width];
+
+        for (int i = 0; i < width; i++)
+        {
+            row[i] = gridArray[x, i];
+        }
+
+        return row;
+    }
+
+    public TGridObject[] GetRowObjects(int y)
+    {
+        TGridObject[] columns = new TGridObject[height];
+
+        for (int i = 0; i < height; i++)
+        {
+            columns[i] = gridArray[i, y];
+        }
+
+        return columns;
     }
 
     public TGridObject GetGridObject(int x, int y)

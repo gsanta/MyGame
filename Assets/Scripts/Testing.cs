@@ -23,8 +23,3 @@ public class Testing : MonoBehaviour
     //    }
     //}
 }
-
-public class GridObject
-{
-    int value;
-}

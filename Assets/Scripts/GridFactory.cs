@@ -11,14 +11,18 @@ public class GridFactory : MonoBehaviour
 
     public GenericGrid<GridObject> CreateGrid()
     {
-        return new GenericGrid<GridObject>(width, height, cellSize, originPosition, () => new GridObject());
+        return new GenericGrid<GridObject>(width, height, cellSize, originPosition, () => new GridObject(0, null));
     }
 
-    public GridTile CreateTile(Vector3 position)
+    public GridTile CreateTile(GenericGrid<GridObject> grid, int xPos, int yPos)
     {
-        var tile = Instantiate(gridTilePrefab, position, Quaternion.identity, transform);
+        var worldPos = grid.GetWorldPosition(xPos, yPos);
+        var tile = Instantiate(gridTilePrefab, worldPos, Quaternion.identity, transform);
         tile.Construct(8.0f);
         tile.gameObject.SetActive(true);
+
+        grid.SetValue(xPos, yPos, new GridObject(1, tile));
+        
         return tile;
     }
 }
