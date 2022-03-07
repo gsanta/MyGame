@@ -1,24 +1,55 @@
 ﻿
+using UnityEngine;
+
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
+public class ProceduralShape : MonoBehaviour {
+	private MeshShape meshShape;
+	private GenericGrid<GridObject> grid;
+	public float mZCoord;
+	public Vector3 mOffset;
+
+	public void Construct(GenericGrid<GridObject> grid, MeshShape meshShape) {
+		this.grid = grid;
+		this.meshShape = meshShape;
+
+		var mesh = new Mesh
+		{
+			name = "Procedural Quad"
+		};
+
+		mesh.vertices = meshShape.Vertices;
+		mesh.triangles = meshShape.Triangles;
+
+		GetComponent<MeshFilter>().mesh = mesh;
+
+		mesh.RecalculateBounds();
+
+		GetComponent<MeshCollider>().sharedMesh = mesh;
+	}
+
+	private Vector3 GetMouseWorldPos()
+	{
+		Vector3 mousePoint = Input.mousePosition;
+		mousePoint.z = mZCoord;
+
+		var worldPoint = Camera.main.ScreenToWorldPoint(mousePoint);
+		worldPoint.z = gameObject.transform.position.z;
+		return worldPoint;
+	}
+
+	public IntPositions[] GetPositions()
+	{
+		int startX, startY;
+		grid.GetXY(GetMouseWorldPos() + mOffset, out startX, out startY);
+
+		IntPositions[] positions = new IntPositions[meshShape.Positions.Length];
+
+		for(int i = 0; i < meshShape.Positions.Length; i++)
+        {
+			positions[i] = meshShape.Positions[i].Add(startX, startY);
+        }
 
 
-public struct IntPositions
-{
-    public int x;
-    public int y;
-
-    public IntPositions(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    public IntPositions Add(int x, int y)
-    {
-        return new IntPositions(this.x + x, this.y + y);
-    }
-}
-
-public interface ProceduralShape
-{
-    IntPositions[] GetPositions();
+		return positions;
+	}
 }

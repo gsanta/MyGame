@@ -1,30 +1,31 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class DragDrop : MonoBehaviour
 {
-    private Vector3 mOffset;
-    private float mZCoord;
     private GenericGrid<GridObject> grid;
     private DropManager dropManager;
+    private PreviewManager previewManager;
+    private ProceduralShape shape;
 
-    public void Construct(GenericGrid<GridObject> grid, DropManager dropManager)
+    public void Construct(GenericGrid<GridObject> grid, DropManager dropManager, PreviewManager previewManager)
     {
         this.grid = grid;
         this.dropManager = dropManager;
+        this.previewManager = previewManager;
+        shape = GetComponent<ProceduralShape>();
+        previewManager.SetShape(GetComponent<ProceduralShape>());
     }
 
     private void OnMouseDown()
     {
-        mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-        mOffset = gameObject.transform.position - GetMouseWorldPos();
+        shape.mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+        shape.mOffset = gameObject.transform.position - GetMouseWorldPos();
     }
 
     private Vector3 GetMouseWorldPos()
     {
         Vector3 mousePoint = Input.mousePosition;
-        mousePoint.z = mZCoord;
+        mousePoint.z = shape.mZCoord;
 
         var worldPoint = Camera.main.ScreenToWorldPoint(mousePoint);
         worldPoint.z = gameObject.transform.position.z;
@@ -33,24 +34,15 @@ public class DragDrop : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        transform.position = GetMouseWorldPos() + mOffset;
-    }
-
-    public void GetDropPosition(out int x, out int y)
-    {
-        grid.GetXY(GetMouseWorldPos() + mOffset, out x, out y);
-    }
-
-    public void GetDropPositions(out int x, out int y)
-    {
-        grid.GetXY(GetMouseWorldPos() + mOffset, out x, out y);
+        transform.position = GetMouseWorldPos() + shape.mOffset;
+        previewManager.UpdatePreview();
     }
 
     private void OnMouseUp()
     {
         if (grid != null)
         {
-            dropManager.OnDrop(this);
+            dropManager.OnDrop(GetComponent<ProceduralShape>());
         }
     }
 }

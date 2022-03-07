@@ -9,7 +9,7 @@ public class RandomShapeChooser : ShapeChooser
         this.meshFactory = meshFactory;
     }
 
-    public ProceduralLShape ChooseShape()
+    public ProceduralShape ChooseShape()
     {
         var shapeNum = System.Enum.GetNames(typeof(ShapeType)).Length;
         var index = Random.Range(0, shapeNum);

@@ -5,11 +5,11 @@ using UnityEngine;
 public class ProceduralMeshFactory : MonoBehaviour
 {
     [SerializeField] private Vector3 originPosition;
-    [SerializeField] private ProceduralQuad quadProceduralPrefab;
-    [SerializeField] private ProceduralLShape lShapePrefab;
+    [SerializeField] private ProceduralShape lShapePrefab;
 
     private GenericGrid<GridObject> grid;
     private DropManager dropManager;
+    private PreviewManager previewManager;
 
     private RotateableMeshShape l1Shape;
     private RotateableMeshShape l2Shape;
@@ -24,10 +24,11 @@ public class ProceduralMeshFactory : MonoBehaviour
 
     private Dictionary<ShapeType, RotateableMeshShape> shapes = new Dictionary<ShapeType, RotateableMeshShape>();
 
-    public void Construct(GenericGrid<GridObject> grid, DropManager dropManager)
+    public void Construct(GenericGrid<GridObject> grid, DropManager dropManager, PreviewManager previewManager)
     {
         this.grid = grid;
         this.dropManager = dropManager;
+        this.previewManager = previewManager;
 
         line3Shape = new LineShapeCreator(3).CreateShape();
         line2Shape = new LineShapeCreator(2).CreateShape();
@@ -52,72 +53,67 @@ public class ProceduralMeshFactory : MonoBehaviour
         shapes.Add(ShapeType.Square4, square4Shape);
     }
 
-    private void Awake()
-    {
-        quadProceduralPrefab.gameObject.SetActive(false);
-    }
-
-    public ProceduralLShape CreateShape(ShapeType type, ShapeDirection direction)
+    public ProceduralShape CreateShape(ShapeType type, ShapeDirection direction)
     {
         return CreateShape(() => shapes[type].GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateL1Shape(ShapeDirection direction)
+    public ProceduralShape CreateL1Shape(ShapeDirection direction)
     {
         return CreateShape(() => l1Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateL2Shape(ShapeDirection direction)
+    public ProceduralShape CreateL2Shape(ShapeDirection direction)
     {
         return CreateShape(() => l2Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateZ1Shape(ShapeDirection direction)
+    public ProceduralShape CreateZ1Shape(ShapeDirection direction)
     {
         return CreateShape(() => z1Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateZ2Shape(ShapeDirection direction)
+    public ProceduralShape CreateZ2Shape(ShapeDirection direction)
     {
         return CreateShape(() => z2Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateLine1Shape(ShapeDirection direction)
+    public ProceduralShape CreateLine1Shape(ShapeDirection direction)
     {
         return CreateShape(() => line1Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateLine2Shape(ShapeDirection direction)
+    public ProceduralShape CreateLine2Shape(ShapeDirection direction)
     {
         return CreateShape(() => line2Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateLine3Shape(ShapeDirection direction)
+    public ProceduralShape CreateLine3Shape(ShapeDirection direction)
     {
         return CreateShape(() => line3Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateSquare2Shape(ShapeDirection direction)
+    public ProceduralShape CreateSquare2Shape(ShapeDirection direction)
     {
         return CreateShape(() => square2Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateSquare3Shape(ShapeDirection direction)
+    public ProceduralShape CreateSquare3Shape(ShapeDirection direction)
     {
         return CreateShape(() => square3Shape.GetMeshShape(direction));
     }
 
-    public ProceduralLShape CreateSquare4Shape(ShapeDirection direction)
+    public ProceduralShape CreateSquare4Shape(ShapeDirection direction)
     {
         return CreateShape(() => square4Shape.GetMeshShape(direction));
     }
 
-    private ProceduralLShape CreateShape(Func<MeshShape> getMeshShape)
+    private ProceduralShape CreateShape(Func<MeshShape> getMeshShape)
     {
         var shape = Instantiate(lShapePrefab, originPosition, Quaternion.identity, transform);
         shape.gameObject.SetActive(true);
-        shape.Construct(getMeshShape());
-        shape.GetComponent<DragDrop>().Construct(grid, dropManager);
+        shape.Construct(grid, getMeshShape());
+        shape.GetComponent<DragDrop>().Construct(grid, dropManager, previewManager);
         return shape;
     }
 }

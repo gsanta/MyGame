@@ -2,12 +2,16 @@
 
 public class GridObject
 {
-    public int value;
-    public GridTile tile;
+    public readonly int value;
+    public readonly GridTile tile;
+    public readonly int x;
+    public readonly int y;
 
-    public GridObject(int value, GridTile tile)
+    public GridObject(int x, int y, int value, GridTile tile)
     {
         this.value = value;
         this.tile = tile;
+        this.x = x;
+        this.y = y;
     }
 }

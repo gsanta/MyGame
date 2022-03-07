@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DropManager : MonoBehaviour
@@ -16,18 +17,24 @@ public class DropManager : MonoBehaviour
         this.randomShapeChooser = randomShapeChooser;
     }
 
-    public void OnDrop(DragDrop dragDrop)
+    public void OnDrop(ProceduralShape shape)
     {
-        var positions = dragDrop.GetComponent<ProceduralShape>().GetPositions();
-        foreach(var position in positions)
+        if (CheckIfAllEmpty(shape))
         {
-            gridFactory.CreateTile(grid, position.x, position.y);
+            var positions = shape.GetPositions();
+            foreach (var position in positions)
+            {
+                int x = position.x;
+                int y = position.y;
+                var tile = gridFactory.CreateTile(grid, x, y);
+                grid.SetValue(x, y, new GridObject(x, y, 1, tile));
+            }
         }
 
         List<int> fullRows = new List<int>();
         List<int> fullColumns = new List<int>();
 
-        foreach (var position in positions)
+        foreach (var position in shape.GetPositions())
         {
             var columnObjects = grid.GetColumnObjects(position.x);
 
@@ -36,7 +43,7 @@ public class DropManager : MonoBehaviour
                 fullColumns.Add(position.x);
             }
 
-            var rowObjects = grid.GetColumnObjects(position.y);
+            var rowObjects = grid.GetRowObjects(position.y);
 
             if (CheckIfFull(rowObjects))
             {
@@ -44,9 +51,17 @@ public class DropManager : MonoBehaviour
             }
         }
 
-        Destroy(dragDrop.gameObject);
+        fullRows.ForEach(row => DestroyTileLine(TileDirection.Row, row));
+        fullColumns.ForEach(col => DestroyTileLine(TileDirection.Column, col));
+
+        Destroy(shape.gameObject);
 
         randomShapeChooser.ChooseShape();
+    }
+
+    private bool CheckIfAllEmpty(ProceduralShape shape)
+    {
+        return shape.GetPositions().All(pos => grid.GetGridObject(pos.x, pos.y).value == 0);
     }
 
     private bool CheckIfFull(GridObject[] objs)
@@ -54,14 +69,22 @@ public class DropManager : MonoBehaviour
         return Array.TrueForAll(objs, (obj) => obj.value == 1);
     }
 
-    private void DestroyColumnTiles(int x)
+    private void DestroyTileLine(TileDirection tileDirection, int colOrRow)
     {
-        var columnObjects = grid.GetColumnObjects(x);
-
+        var line = tileDirection == TileDirection.Column ? grid.GetColumnObjects(colOrRow) : grid.GetRowObjects(colOrRow);
+        Array.ForEach(line, (obj) =>
+        {
+            if (obj.value == 1)
+            {
+                Destroy(obj.tile.gameObject);
+                grid.SetValue(obj.x, obj.y, new GridObject(obj.x, obj.y, 0, null));
+            }
+        });
     }
+}
 
-    private void DestroyRowTiles()
-    {
-
-    }
+enum TileDirection
+{
+    Row,
+    Column
 }

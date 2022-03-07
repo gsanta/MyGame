@@ -1,4 +1,4 @@
 ﻿public interface ShapeChooser
 {
-    ProceduralLShape ChooseShape();
+    ProceduralShape ChooseShape();
 }

@@ -10,7 +10,7 @@ public class GenericGrid<TGridObject>
     private TextMesh[,] debugTextArray;
     private Vector3 originPosition;
 
-    public GenericGrid(int width, int height, float cellSize, Vector3 originPosition, Func<TGridObject> createGridObject)
+    public GenericGrid(int width, int height, float cellSize, Vector3 originPosition, Func<int, int, TGridObject> createGridObject)
     {
         this.originPosition = originPosition;
         this.width = width;
@@ -24,7 +24,7 @@ public class GenericGrid<TGridObject>
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-                gridArray[x, y] = createGridObject();
+                gridArray[x, y] = createGridObject(x, y);
             }
         }
 
@@ -58,6 +58,11 @@ public class GenericGrid<TGridObject>
     {
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
+    }
+
+    public bool IsWithinGrid(int x, int y)
+    {
+        return x > 0 && x < width && y > 0 && y < height;
     }
 
     public void SetValue(int x, int y, TGridObject value)

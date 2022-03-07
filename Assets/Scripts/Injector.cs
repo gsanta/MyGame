@@ -7,6 +7,7 @@ class Injector : MonoBehaviour
     [SerializeField] private GridFactory gridFactory;
     [SerializeField] private ProceduralMeshFactory proceduralMeshFactory;
     [SerializeField] private DropManager dropManager;
+    [SerializeField] private PreviewManager previewManager;
 
     private RandomShapeChooser randomShapeChooser;
     private GenericGrid<GridObject> grid;
@@ -17,7 +18,8 @@ class Injector : MonoBehaviour
         grid = gridFactory.CreateGrid();
         gridRenderer.Construct(grid);
         dropManager.Construct(grid, gridFactory, randomShapeChooser);
-        proceduralMeshFactory.Construct(grid, dropManager);
+        previewManager.Construct(grid, gridFactory);
+        proceduralMeshFactory.Construct(grid, dropManager, previewManager);
 
         randomShapeChooser.ChooseShape();
     }
