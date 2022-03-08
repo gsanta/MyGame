@@ -62,7 +62,7 @@ public class GenericGrid<TGridObject>
 
     public bool IsWithinGrid(int x, int y)
     {
-        return x > 0 && x < width && y > 0 && y < height;
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     public void SetValue(int x, int y, TGridObject value)

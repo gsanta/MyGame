@@ -55,64 +55,64 @@ public class ProceduralMeshFactory : MonoBehaviour
 
     public ProceduralShape CreateShape(ShapeType type, ShapeDirection direction)
     {
-        return CreateShape(() => shapes[type].GetMeshShape(direction));
+        return CreateShape(() => shapes[type].GetMeshShape(direction), type, direction);
     }
 
     public ProceduralShape CreateL1Shape(ShapeDirection direction)
     {
-        return CreateShape(() => l1Shape.GetMeshShape(direction));
+        return CreateShape(() => l1Shape.GetMeshShape(direction), ShapeType.L1, direction);
     }
 
     public ProceduralShape CreateL2Shape(ShapeDirection direction)
     {
-        return CreateShape(() => l2Shape.GetMeshShape(direction));
+        return CreateShape(() => l2Shape.GetMeshShape(direction), ShapeType.L2, direction);
     }
 
     public ProceduralShape CreateZ1Shape(ShapeDirection direction)
     {
-        return CreateShape(() => z1Shape.GetMeshShape(direction));
+        return CreateShape(() => z1Shape.GetMeshShape(direction), ShapeType.Z1, direction);
     }
 
     public ProceduralShape CreateZ2Shape(ShapeDirection direction)
     {
-        return CreateShape(() => z2Shape.GetMeshShape(direction));
+        return CreateShape(() => z2Shape.GetMeshShape(direction), ShapeType.Z2, direction);
     }
 
     public ProceduralShape CreateLine1Shape(ShapeDirection direction)
     {
-        return CreateShape(() => line1Shape.GetMeshShape(direction));
+        return CreateShape(() => line1Shape.GetMeshShape(direction), ShapeType.Line1, direction);
     }
 
     public ProceduralShape CreateLine2Shape(ShapeDirection direction)
     {
-        return CreateShape(() => line2Shape.GetMeshShape(direction));
+        return CreateShape(() => line2Shape.GetMeshShape(direction), ShapeType.Line2, direction);
     }
 
     public ProceduralShape CreateLine3Shape(ShapeDirection direction)
     {
-        return CreateShape(() => line3Shape.GetMeshShape(direction));
+        return CreateShape(() => line3Shape.GetMeshShape(direction), ShapeType.Line3, direction);
     }
 
     public ProceduralShape CreateSquare2Shape(ShapeDirection direction)
     {
-        return CreateShape(() => square2Shape.GetMeshShape(direction));
+        return CreateShape(() => square2Shape.GetMeshShape(direction), ShapeType.Square2, direction);
     }
 
     public ProceduralShape CreateSquare3Shape(ShapeDirection direction)
     {
-        return CreateShape(() => square3Shape.GetMeshShape(direction));
+        return CreateShape(() => square3Shape.GetMeshShape(direction), ShapeType.Square3, direction);
     }
 
     public ProceduralShape CreateSquare4Shape(ShapeDirection direction)
     {
-        return CreateShape(() => square4Shape.GetMeshShape(direction));
+        return CreateShape(() => square4Shape.GetMeshShape(direction), ShapeType.Square4, direction);
     }
 
-    private ProceduralShape CreateShape(Func<MeshShape> getMeshShape)
+    private ProceduralShape CreateShape(Func<MeshShape> getMeshShape, ShapeType type, ShapeDirection direction)
     {
         var shape = Instantiate(lShapePrefab, originPosition, Quaternion.identity, transform);
+        shape.Construct(grid, getMeshShape(), type, direction);
         shape.gameObject.SetActive(true);
-        shape.Construct(grid, getMeshShape());
         shape.GetComponent<DragDrop>().Construct(grid, dropManager, previewManager);
         return shape;
     }

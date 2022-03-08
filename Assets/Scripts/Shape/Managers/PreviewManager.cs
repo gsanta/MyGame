@@ -23,24 +23,28 @@ public class PreviewManager : MonoBehaviour
         this.shape = shape;
     }
 
+    public void Reset()
+    {
+        ClearTiles();
+    }
+
     public void UpdatePreview()
     {
         var positions = shape.GetPositions();
         
-        if (bottomLeftPos.x == positions[0].x && bottomLeftPos.y == positions[0].y)
+        if (bottomLeftPos.x != positions[0].x || bottomLeftPos.y != positions[0].y)
         {
             ClearTiles();
+            CreateTiles();
         }
-
-        CreateTiles();
     }
 
     private void CreateTiles()
     {
         var positions = shape.GetPositions();
-        bool isWithin = Array.TrueForAll(shape.GetPositions(), pos => grid.IsWithinGrid(pos.x, pos.y));
+        bool isWithinBoundaries = Array.TrueForAll(positions, pos => grid.IsWithinGrid(pos.x, pos.y));
 
-        if (!isWithin)
+        if (!GridUtils.IsWithinBoundaries(positions, grid) || GridUtils.IsOccupied(positions, grid))
         {
             return;
         }

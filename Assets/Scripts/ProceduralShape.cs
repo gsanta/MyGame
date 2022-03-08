@@ -7,10 +7,14 @@ public class ProceduralShape : MonoBehaviour {
 	private GenericGrid<GridObject> grid;
 	public float mZCoord;
 	public Vector3 mOffset;
+	public ShapeType shapeType;
+	public ShapeDirection shapeDirection;
 
-	public void Construct(GenericGrid<GridObject> grid, MeshShape meshShape) {
+	public void Construct(GenericGrid<GridObject> grid, MeshShape meshShape, ShapeType shapeType, ShapeDirection shapeDirection) {
 		this.grid = grid;
 		this.meshShape = meshShape;
+		this.shapeType = shapeType;
+		this.shapeDirection = shapeDirection;
 
 		var mesh = new Mesh
 		{

@@ -4,31 +4,42 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class ShapeDroppedEventArgs : EventArgs
+{
+    public bool IsSuccess { get; private set; }
+
+    public ShapeDroppedEventArgs(bool isSuccess)
+    {
+        IsSuccess = isSuccess;
+    }
+}
+
 public class DropManager : MonoBehaviour
 {
     private GenericGrid<GridObject> grid;
     private GridFactory gridFactory;
-    private RandomShapeChooser randomShapeChooser;
 
-    public void Construct(GenericGrid<GridObject> grid, GridFactory gridFactory, RandomShapeChooser randomShapeChooser)
+    public void Construct(GenericGrid<GridObject> grid, GridFactory gridFactory)
     {
         this.grid = grid;
         this.gridFactory = gridFactory;
-        this.randomShapeChooser = randomShapeChooser;
     }
 
     public void OnDrop(ProceduralShape shape)
     {
-        if (CheckIfAllEmpty(shape))
+        if (!CheckIfValidPosition(shape))
         {
-            var positions = shape.GetPositions();
-            foreach (var position in positions)
-            {
-                int x = position.x;
-                int y = position.y;
-                var tile = gridFactory.CreateTile(grid, x, y);
-                grid.SetValue(x, y, new GridObject(x, y, 1, tile));
-            }
+            OnShapeDropped(new ShapeDroppedEventArgs(false));
+            return;
+        }
+
+        var positions = shape.GetPositions();
+        foreach (var position in positions)
+        {
+            int x = position.x;
+            int y = position.y;
+            var tile = gridFactory.CreateTile(grid, x, y);
+            grid.SetValue(x, y, new GridObject(x, y, 1, tile));
         }
 
         List<int> fullRows = new List<int>();
@@ -56,12 +67,18 @@ public class DropManager : MonoBehaviour
 
         Destroy(shape.gameObject);
 
-        randomShapeChooser.ChooseShape();
+        OnShapeDropped(new ShapeDroppedEventArgs(true));
     }
 
-    private bool CheckIfAllEmpty(ProceduralShape shape)
+    private bool CheckIfValidPosition(ProceduralShape shape)
     {
-        return shape.GetPositions().All(pos => grid.GetGridObject(pos.x, pos.y).value == 0);
+        var positions = shape.GetPositions();
+        if (!GridUtils.IsWithinBoundaries(positions, grid) || GridUtils.IsOccupied(positions, grid))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private bool CheckIfFull(GridObject[] objs)
@@ -80,6 +97,12 @@ public class DropManager : MonoBehaviour
                 grid.SetValue(obj.x, obj.y, new GridObject(obj.x, obj.y, 0, null));
             }
         });
+    }
+
+    public event EventHandler<ShapeDroppedEventArgs> ShapeDropped;
+    private void OnShapeDropped(ShapeDroppedEventArgs args)
+    {
+        ShapeDropped?.Invoke(this, args);
     }
 }
 
