@@ -27,11 +27,14 @@ class LineShapeCreator
             positions[i] = new IntPositions(0, i);
         }
 
+        var bounds = (0, 0, 0, size);
+
         upShape = new MeshShape()
         {
             Vertices = vertices,
             Triangles = triangles,
-            Positions = positions
+            Positions = positions,
+            Bounds = bounds
         };
     }
 
@@ -52,11 +55,14 @@ class LineShapeCreator
             positions[i] = new IntPositions(i, 0);
         }
 
+        var bounds = (0, 0, size, 0);
+
         rightShape = new MeshShape()
         {
             Vertices = vertices,
             Triangles = triangles,
-            Positions = positions
+            Positions = positions,
+            Bounds = bounds
         };
     }
 

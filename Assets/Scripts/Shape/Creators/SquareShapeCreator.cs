@@ -24,11 +24,14 @@ public class SquareShapeCreator
             }
         }
 
+        var bounds = (0, 0, size, size);
+
         upShape = new MeshShape()
         {
             Vertices = vertices,
             Triangles = triangles,
-            Positions = positions
+            Positions = positions,
+            Bounds = bounds
         };
     }
 

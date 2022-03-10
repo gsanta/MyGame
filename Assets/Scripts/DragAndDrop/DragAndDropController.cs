@@ -5,13 +5,15 @@ public class DragAndDropController : MonoBehaviour
 {
     private PreviewManager previewManager;
     private RandomShapeChooser randomShapeChooser;
-    private ProceduralMeshFactory meshFactory;
+    private ShapeFactory meshFactory;
+    private GenericGrid<GridObject> grid;
     private ProceduralShape currentShape;
 
-    public void Construct(DropManager dropManager, PreviewManager previewManager, ProceduralMeshFactory meshFactory)
+    public void Construct(DropManager dropManager, PreviewManager previewManager, ShapeFactory meshFactory, GenericGrid<GridObject> grid)
     {
         this.previewManager = previewManager;
         this.meshFactory = meshFactory;
+        this.grid = grid;
         this.randomShapeChooser = new RandomShapeChooser(meshFactory);
 
         dropManager.ShapeDropped += ShapeDropped; 
@@ -29,10 +31,45 @@ public class DragAndDropController : MonoBehaviour
         if (args.IsSuccess)
         {
             currentShape = randomShapeChooser.ChooseShape();
+            if (CheckIfHasValidPosition())
+            {
+                Debug.Log("no more steps");
+            }
         } else
         {
             currentShape = meshFactory.CreateShape(currentShape.shapeType, currentShape.shapeDirection);
         }
+    }
+
+    bool CheckIfHasValidPosition()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            var direction = (ShapeDirection)i;
+            var type = currentShape.shapeType;
+            var meshShape = meshFactory.CreateMeshShape(type, direction);
+            var (left, bottom, right, top) = meshShape.Bounds;
+            var (gridLeft, gridBottom, gridRight, gridTop) = (-left, -bottom, grid.width - right, grid.height - top);
+            
+            for (int j = gridLeft; j < gridRight; j++)
+            {
+                for (int k = gridBottom; k < gridTop; k++)
+                {
+                    IntPositions[] positions = new IntPositions[meshShape.Positions.Length];
+
+                    for (int l = 0; l < meshShape.Positions.Length; l++)
+                    {
+                        positions[l] = meshShape.Positions[l].Add(j, k);
+                    }
+
+                    if (!GridUtils.IsOccupied(positions, grid))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void Rotate()

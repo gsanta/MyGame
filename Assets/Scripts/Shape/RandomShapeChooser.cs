@@ -2,9 +2,9 @@
 
 public class RandomShapeChooser : ShapeChooser
 {
-    private ProceduralMeshFactory meshFactory;
+    private ShapeFactory meshFactory;
 
-    public RandomShapeChooser(ProceduralMeshFactory meshFactory)
+    public RandomShapeChooser(ShapeFactory meshFactory)
     {
         this.meshFactory = meshFactory;
     }

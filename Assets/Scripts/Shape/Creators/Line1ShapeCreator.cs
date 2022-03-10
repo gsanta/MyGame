@@ -12,7 +12,9 @@ class Line1ShapeCreator
             0, 2, 1, 1, 2, 3
         },
 
-        Positions = new IntPositions[] { new IntPositions(0, 0) }
+        Positions = new IntPositions[] { new IntPositions(0, 0) },
+
+        Bounds = (0, 0, 0, 0)
     };
 
     public RotateableMeshShape CreateShape()

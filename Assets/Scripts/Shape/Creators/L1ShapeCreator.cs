@@ -13,7 +13,9 @@ class L1ShapeCreator
             0, 1, 3, 0, 3, 2, 3, 6, 4, 4, 6, 5
         },
 
-        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(0, 1), new IntPositions(0, 2), new IntPositions(1, 2) }
+        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(0, 1), new IntPositions(0, 2), new IntPositions(1, 2) },
+
+        Bounds = (0, 0, 1, 2)
     };
 
     private MeshShape rightShape = new MeshShape()
@@ -27,7 +29,9 @@ class L1ShapeCreator
             0, 2, 1, 1, 2, 3, 1, 6, 5, 1, 5, 4
         },
 
-        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(1, 0), new IntPositions(2, 0), new IntPositions(2, -1) }
+        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(1, 0), new IntPositions(2, 0), new IntPositions(2, -1) },
+
+        Bounds = (0, -1, 2, 0)
     };
 
     private MeshShape downShape = new MeshShape()
@@ -41,7 +45,9 @@ class L1ShapeCreator
             0, 1, 3, 0, 3, 2, 2, 6, 4, 2, 5, 6
         },
 
-        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(0, 1), new IntPositions(0, 2), new IntPositions(-1, 0) }
+        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(0, 1), new IntPositions(0, 2), new IntPositions(-1, 0) },
+
+        Bounds = (-1, 0, 0, 2)
     };
 
     private MeshShape leftShape = new MeshShape()
@@ -55,7 +61,9 @@ class L1ShapeCreator
             0, 2, 1, 1, 2, 3, 0, 6, 5, 0, 5, 4
         },
 
-        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(1, 0), new IntPositions(2, 0), new IntPositions(0, 1) }
+        Positions = new IntPositions[] { new IntPositions(0, 0), new IntPositions(1, 0), new IntPositions(2, 0), new IntPositions(0, 1) },
+
+        Bounds = (0, 0, 2, 1)
     };
 
     public RotateableMeshShape CreateShape()
