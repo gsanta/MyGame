@@ -7,7 +7,7 @@ public class ShapeFactory : MonoBehaviour
     [SerializeField] private Vector3 originPosition;
     [SerializeField] private ProceduralShape lShapePrefab;
 
-    private GenericGrid<GridObject> grid;
+    private GenericGrid<Block2D> grid;
     private DropManager dropManager;
     private PreviewManager previewManager;
 
@@ -24,7 +24,7 @@ public class ShapeFactory : MonoBehaviour
 
     private Dictionary<ShapeType, RotateableMeshShape> shapes = new Dictionary<ShapeType, RotateableMeshShape>();
 
-    public void Construct(GenericGrid<GridObject> grid, DropManager dropManager, PreviewManager previewManager)
+    public void Construct(GenericGrid<Block2D> grid, DropManager dropManager, PreviewManager previewManager)
     {
         this.grid = grid;
         this.dropManager = dropManager;

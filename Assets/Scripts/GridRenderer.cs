@@ -7,10 +7,10 @@ using UnityEngine;
 
 public class GridRenderer : MonoBehaviour
 {
-    private GenericGrid<GridObject> grid;
+    private GenericGrid<Block2D> grid;
     private List<LineRenderer> lineRenderers = new List<LineRenderer>();
     
-    public void Construct(GenericGrid<GridObject> grid)
+    public void Construct(GenericGrid<Block2D> grid)
     {
         this.grid = grid;
     }

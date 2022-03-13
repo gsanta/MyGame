@@ -6,13 +6,13 @@ using UnityEngine;
 public class PreviewManager : MonoBehaviour
 {
     private GridFactory gridFactory;
-    private GenericGrid<GridObject> grid;
+    private GenericGrid<Block2D> grid;
     
     private ProceduralShape shape;
-    private List<GridTile> tiles = new List<GridTile>();
+    private List<Tile2D> tiles = new List<Tile2D>();
     private IntPositions bottomLeftPos;
 
-    public void Construct(GenericGrid<GridObject> grid, GridFactory gridFactory)
+    public void Construct(GenericGrid<Block2D> grid, GridFactory gridFactory)
     {
         this.grid = grid;
         this.gridFactory = gridFactory;

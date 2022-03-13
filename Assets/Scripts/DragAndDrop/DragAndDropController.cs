@@ -6,15 +6,17 @@ public class DragAndDropController : MonoBehaviour
     private PreviewManager previewManager;
     private RandomShapeChooser randomShapeChooser;
     private ShapeFactory meshFactory;
-    private GenericGrid<GridObject> grid;
+    private GenericGrid<Block2D> grid;
     private ProceduralShape currentShape;
+    private CanvasController canvasController;
 
-    public void Construct(DropManager dropManager, PreviewManager previewManager, ShapeFactory meshFactory, GenericGrid<GridObject> grid)
+    public void Construct(DropManager dropManager, PreviewManager previewManager, ShapeFactory meshFactory, GenericGrid<Block2D> grid, CanvasController canvasController)
     {
         this.previewManager = previewManager;
         this.meshFactory = meshFactory;
         this.grid = grid;
-        this.randomShapeChooser = new RandomShapeChooser(meshFactory);
+        this.canvasController = canvasController;
+        randomShapeChooser = new RandomShapeChooser(meshFactory);
 
         dropManager.ShapeDropped += ShapeDropped; 
     }
@@ -31,9 +33,9 @@ public class DragAndDropController : MonoBehaviour
         if (args.IsSuccess)
         {
             currentShape = randomShapeChooser.ChooseShape();
-            if (CheckIfHasValidPosition())
+            if (!CheckIfHasValidPosition())
             {
-                Debug.Log("no more steps");
+                canvasController.EndSetupLevel();
             }
         } else
         {

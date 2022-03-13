@@ -4,13 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class ProceduralShape : MonoBehaviour {
 	private MeshShape meshShape;
-	private GenericGrid<GridObject> grid;
+	private GenericGrid<Block2D> grid;
 	public float mZCoord;
 	public Vector3 mOffset;
 	public ShapeType shapeType;
 	public ShapeDirection shapeDirection;
 
-	public void Construct(GenericGrid<GridObject> grid, MeshShape meshShape, ShapeType shapeType, ShapeDirection shapeDirection) {
+	public void Construct(GenericGrid<Block2D> grid, MeshShape meshShape, ShapeType shapeType, ShapeDirection shapeDirection) {
 		this.grid = grid;
 		this.meshShape = meshShape;
 		this.shapeType = shapeType;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
-public class GridTile : MonoBehaviour
+public class Tile2D : MonoBehaviour
 {
 	public void Construct(float scale)
 	{

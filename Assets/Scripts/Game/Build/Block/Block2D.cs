@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class GridObject
+public class Block2D
 {
     public readonly int value;
-    public readonly GridTile tile;
+    public readonly Tile2D tile;
     public readonly int x;
     public readonly int y;
 
-    public GridObject(int x, int y, int value, GridTile tile)
+    public Block2D(int x, int y, int value, Tile2D tile)
     {
         this.value = value;
         this.tile = tile;

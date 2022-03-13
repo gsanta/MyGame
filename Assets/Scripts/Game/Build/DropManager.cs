@@ -16,10 +16,10 @@ public class ShapeDroppedEventArgs : EventArgs
 
 public class DropManager : MonoBehaviour
 {
-    private GenericGrid<GridObject> grid;
+    private GenericGrid<Block2D> grid;
     private GridFactory gridFactory;
 
-    public void Construct(GenericGrid<GridObject> grid, GridFactory gridFactory)
+    public void Construct(GenericGrid<Block2D> grid, GridFactory gridFactory)
     {
         this.grid = grid;
         this.gridFactory = gridFactory;
@@ -39,7 +39,7 @@ public class DropManager : MonoBehaviour
             int x = position.x;
             int y = position.y;
             var tile = gridFactory.CreateTile(grid, x, y);
-            grid.SetValue(x, y, new GridObject(x, y, 1, tile));
+            grid.SetValue(x, y, new Block2D(x, y, 1, tile));
         }
 
         List<int> fullRows = new List<int>();
@@ -81,7 +81,7 @@ public class DropManager : MonoBehaviour
         return true;
     }
 
-    private bool CheckIfFull(GridObject[] objs)
+    private bool CheckIfFull(Block2D[] objs)
     {
         return Array.TrueForAll(objs, (obj) => obj.value == 1);
     }
@@ -94,7 +94,7 @@ public class DropManager : MonoBehaviour
             if (obj.value == 1)
             {
                 Destroy(obj.tile.gameObject);
-                grid.SetValue(obj.x, obj.y, new GridObject(obj.x, obj.y, 0, null));
+                grid.SetValue(obj.x, obj.y, new Block2D(obj.x, obj.y, 0, null));
             }
         });
     }

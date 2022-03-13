@@ -2,12 +2,12 @@
 
 public class DragDrop : MonoBehaviour
 {
-    private GenericGrid<GridObject> grid;
+    private GenericGrid<Block2D> grid;
     private DropManager dropManager;
     private PreviewManager previewManager;
     private ProceduralShape shape;
 
-    public void Construct(GenericGrid<GridObject> grid, DropManager dropManager, PreviewManager previewManager)
+    public void Construct(GenericGrid<Block2D> grid, DropManager dropManager, PreviewManager previewManager)
     {
         this.grid = grid;
         this.dropManager = dropManager;
