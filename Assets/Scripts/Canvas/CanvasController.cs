@@ -3,13 +3,13 @@
 public class CanvasController : MonoBehaviour
 {
     [SerializeField] private GameObject startLevelModal;
-    private GameGridSetup gameGridSetup;
-    private LevelBuilderSetup levelGuilderSetup;
+    private BattleGridSetup battleGridSetup;
+    private PuzzleManager levelGuilderSetup;
     private PlayersSetup playerSetup;
-    private GenericGrid<Block2D> grid;
-    public void Construct(GameGridSetup gameGridSetup, LevelBuilderSetup levelGuilderSetup, GenericGrid<Block2D> grid, PlayersSetup playerSetup)
+    private GenericGrid<PuzzleBlock> grid;
+    public void Construct(BattleGridSetup battleGridSetup, PuzzleManager levelGuilderSetup, GenericGrid<PuzzleBlock> grid, PlayersSetup playerSetup)
     {
-        this.gameGridSetup = gameGridSetup;
+        this.battleGridSetup = battleGridSetup;
         this.levelGuilderSetup = levelGuilderSetup;
         this.playerSetup = playerSetup;
         this.grid = grid;
@@ -22,7 +22,7 @@ public class CanvasController : MonoBehaviour
     public void StartLevel()
     {
         startLevelModal.SetActive(false);
-        var gameGrid = gameGridSetup.Create(grid);
+        var gameGrid = battleGridSetup.Create(grid);
         levelGuilderSetup.TearDown();
         playerSetup.Setup(gameGrid);
     }

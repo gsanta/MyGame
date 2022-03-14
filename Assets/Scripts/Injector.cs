@@ -4,28 +4,30 @@ using UnityEngine;
 class Injector : MonoBehaviour
 {
     [SerializeField] private GridLineRenderer gridLineRenderer;
-    [SerializeField] private LevelGridSetup levelGridSetup;
+    [SerializeField] private PuzzleGridSetup puzzleGridSetup;
     [SerializeField] private ShapeFactory proceduralMeshFactory;
-    [SerializeField] private DropManager dropManager;
-    [SerializeField] private PreviewManager previewManager;
-    [SerializeField] private DragAndDropController dragAndDropController;
+    [SerializeField] private DropController dropController;
+    [SerializeField] private PreviewController previewController;
+    [SerializeField] private DragController dragController;
     [SerializeField] private CanvasController canvasController;
-    [SerializeField] private GameTileFactory gameTileFactory;
-    [SerializeField] private GameGridSetup gameGridSetup;
+    [SerializeField] private GroundTileFactory groundTileFactory;
+    [SerializeField] private BattleGridSetup battleGridSetup;
     [SerializeField] private PlayersSetup playerSetup;
+    private PuzzleManager puzzleManager;
 
-    private GenericGrid<Block2D> grid;
+    private GenericGrid<PuzzleBlock> grid;
 
     private void Awake()
     {
-        grid = levelGridSetup.CreateGrid();
+        grid = puzzleGridSetup.CreateGrid();
         gridLineRenderer.Construct(grid);
-        dropManager.Construct(grid, levelGridSetup);
-        previewManager.Construct(grid, levelGridSetup);
-        proceduralMeshFactory.Construct(grid, dropManager, previewManager);
-        dragAndDropController.Construct(dropManager, previewManager, proceduralMeshFactory, grid, canvasController);
-        gameGridSetup.Construct(gameTileFactory);
-        canvasController.Construct(gameGridSetup, levelGridSetup, grid, playerSetup);
-        dragAndDropController.Init();
+        dropController.Construct(grid, puzzleGridSetup);
+        previewController.Construct(grid, puzzleGridSetup);
+        proceduralMeshFactory.Construct(grid, dropController, previewController);
+        dragController.Construct(dropController, previewController, proceduralMeshFactory, grid, canvasController);
+        battleGridSetup.Construct(groundTileFactory);
+        puzzleManager = new PuzzleManager(gridLineRenderer, puzzleGridSetup, dragController, grid);
+        canvasController.Construct(battleGridSetup, puzzleManager, grid, playerSetup);
+        dragController.Init();
     }
 }
