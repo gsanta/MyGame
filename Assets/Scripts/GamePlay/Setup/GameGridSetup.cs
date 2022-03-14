@@ -1,17 +1,19 @@
-﻿public class GameGridCreator
-{
-    private GridFactory gridFactory;
-    private readonly GameTileFactory gameTileFactory;
+﻿using UnityEngine;
 
-    public GameGridCreator(GridFactory gridFactory, GameTileFactory gameTileFactory)
+public class GameGridSetup : MonoBehaviour
+{
+    [SerializeField] private float cellSize;
+    [SerializeField] private GameObject originPosition;
+    private GameTileFactory gameTileFactory;
+
+    public void Construct(GameTileFactory gameTileFactory)
     {
-        this.gridFactory = gridFactory;
         this.gameTileFactory = gameTileFactory;
     }
 
     public GenericGrid<GameBlock> Create(GenericGrid<Block2D> setupGrid)
     {
-        var grid = gridFactory.CreateGameGrid();
+        var grid = CreateGameGrid(setupGrid.width, setupGrid.height);
 
         for (int i = 0; i < grid.width; i++)
         {
@@ -32,5 +34,11 @@
         }
 
         return grid;
+    }
+
+    private GenericGrid<GameBlock> CreateGameGrid(int width, int height)
+    {
+        var origin = originPosition.transform.position + new Vector3(cellSize / 2, cellSize / 2, 0);
+        return new GenericGrid<GameBlock>(width, height, cellSize, origin, (int x, int y) => new GameBlock(x, y, null));
     }
 }

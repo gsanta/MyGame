@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GridRenderer : MonoBehaviour
+public class GridLineRenderer : MonoBehaviour
 {
     private GenericGrid<Block2D> grid;
     private List<LineRenderer> lineRenderers = new List<LineRenderer>();
@@ -34,6 +30,14 @@ public class GridRenderer : MonoBehaviour
             var start = grid.GetWorldPosition(x, 0);
             var end = grid.GetWorldPosition(x, grid.height);
             CreateLine(start, end, "Column line " + x);
+        }
+    }
+
+    public void TearDown()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 

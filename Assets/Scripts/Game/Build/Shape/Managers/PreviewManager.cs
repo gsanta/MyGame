@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class PreviewManager : MonoBehaviour
 {
-    private GridFactory gridFactory;
+    private LevelGridSetup gridFactory;
     private GenericGrid<Block2D> grid;
     
     private ProceduralShape shape;
     private List<Tile2D> tiles = new List<Tile2D>();
     private IntPositions bottomLeftPos;
 
-    public void Construct(GenericGrid<Block2D> grid, GridFactory gridFactory)
+    public void Construct(GenericGrid<Block2D> grid, LevelGridSetup gridFactory)
     {
         this.grid = grid;
         this.gridFactory = gridFactory;

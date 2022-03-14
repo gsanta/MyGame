@@ -3,12 +3,14 @@
 public class CanvasController : MonoBehaviour
 {
     [SerializeField] private GameObject startLevelModal;
-    private GameGridCreator gameGridCreator;
+    private GameGridSetup gameGridSetup;
+    private LevelBuilderSetup levelGuilderSetup;
     private PlayersSetup playerSetup;
     private GenericGrid<Block2D> grid;
-    public void Construct(GameGridCreator gameGridCreator, GenericGrid<Block2D> grid, PlayersSetup playerSetup)
+    public void Construct(GameGridSetup gameGridSetup, LevelBuilderSetup levelGuilderSetup, GenericGrid<Block2D> grid, PlayersSetup playerSetup)
     {
-        this.gameGridCreator = gameGridCreator;
+        this.gameGridSetup = gameGridSetup;
+        this.levelGuilderSetup = levelGuilderSetup;
         this.playerSetup = playerSetup;
         this.grid = grid;
     }
@@ -20,7 +22,8 @@ public class CanvasController : MonoBehaviour
     public void StartLevel()
     {
         startLevelModal.SetActive(false);
-        var gameGrid = gameGridCreator.Create(grid);
-        //playerSetup.Setup(gameGrid);
+        var gameGrid = gameGridSetup.Create(grid);
+        levelGuilderSetup.TearDown();
+        playerSetup.Setup(gameGrid);
     }
 }

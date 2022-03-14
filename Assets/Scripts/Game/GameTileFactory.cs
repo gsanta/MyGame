@@ -16,7 +16,9 @@ public class GameTileFactory : MonoBehaviour
             tile = gameBlockTile2;
         }
 
-        return Instantiate(tile, worldPos, Quaternion.identity, transform);
+        var newTile = Instantiate(tile, worldPos, Quaternion.identity, transform);
+        newTile.gameObject.SetActive(true);
+        return newTile;
     }
 }
 

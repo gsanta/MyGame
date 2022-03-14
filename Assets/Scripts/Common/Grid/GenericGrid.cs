@@ -7,8 +7,8 @@ public class GenericGrid<TGridObject>
     public readonly int height;
     private float cellSize;
     private TGridObject[,] gridArray;
-    private TextMesh[,] debugTextArray;
     private Vector3 originPosition;
+    private Vector3 worldSize;
 
     public GenericGrid(int width, int height, float cellSize, Vector3 originPosition, Func<int, int, TGridObject> createGridObject)
     {
@@ -16,9 +16,9 @@ public class GenericGrid<TGridObject>
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
+        worldSize = new Vector3(width * cellSize, height * cellSize, 0);
 
         gridArray = new TGridObject[width, height];
-        debugTextArray = new TextMesh[width, height];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
@@ -27,37 +27,19 @@ public class GenericGrid<TGridObject>
                 gridArray[x, y] = createGridObject(x, y);
             }
         }
-
-        bool showDebug = true;
-        if (showDebug)
-        {
-            for (int x = 0; x < gridArray.GetLength(0); x++)
-            {
-                for (int y = 0; y < gridArray.GetLength(1); y++)
-                {
-                    //debugTextArray[x, y] = Utilities.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 20, Color.white, TextAnchor.MiddleCenter);
-                    //Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
-                    //Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
-                }
-            }
-            //Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
-            //Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
-
-
-        }
     }
 
     public Vector3 GetWorldPosition(int x, int y)
     {
-        var position = new Vector3(x, y) * cellSize + originPosition;
+        var position = new Vector3(x, y) * cellSize + originPosition - worldSize / 2;
         position.z = originPosition.z;
         return position;
     }
 
     public void GetXY(Vector3 worldPosition, out int x, out int y)
     {
-        x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
-        y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
+        x = Mathf.FloorToInt((worldPosition - originPosition + worldSize / 2).x / cellSize);
+        y = Mathf.FloorToInt((worldPosition - originPosition + worldSize / 2).y / cellSize);
     }
 
     public bool IsWithinGrid(int x, int y)
@@ -70,7 +52,6 @@ public class GenericGrid<TGridObject>
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
             gridArray[x, y] = value;
-            //debugTextArray[x, y].text = gridArray[x, y].ToString();
         }
     }
 

@@ -17,9 +17,9 @@ public class ShapeDroppedEventArgs : EventArgs
 public class DropManager : MonoBehaviour
 {
     private GenericGrid<Block2D> grid;
-    private GridFactory gridFactory;
+    private LevelGridSetup gridFactory;
 
-    public void Construct(GenericGrid<Block2D> grid, GridFactory gridFactory)
+    public void Construct(GenericGrid<Block2D> grid, LevelGridSetup gridFactory)
     {
         this.grid = grid;
         this.gridFactory = gridFactory;
