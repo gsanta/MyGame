@@ -1,7 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SelectionController : MonoBehaviour
 {
+    private Dictionary<GroundBlock, GroundBlock> movements = new Dictionary<GroundBlock, GroundBlock>();
+    private GenericGrid<GroundBlock> grid;
+    public void SetGrid(GenericGrid<GroundBlock> grid)
+    {
+        this.grid = grid;
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -13,9 +21,18 @@ public class SelectionController : MonoBehaviour
             {
                 if (hit.transform)
                 {
-                    hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.black;
+                    var selectionComponent = hit.transform.GetComponent<SelectionComponent>();
+                    selectionComponent.SetSelected(!selectionComponent.IsSelected);
+                    Debug.Log("has player: " + HasPlayer(hit.transform));
                 }
             }
         }
+    }
+
+    private bool HasPlayer(Transform transform)
+    {
+        int x, y;
+        var gridObject = grid.GetGridObject(transform.position);
+        return gridObject != null && gridObject.Player;
     }
 }

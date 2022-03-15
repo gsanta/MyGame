@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2689744850826659807}
   - component: {fileID: 6443794086790140694}
   - component: {fileID: 1310525949}
+  - component: {fileID: 6883367257295440404}
   m_Layer: 6
   m_Name: Ground Tile 2
   m_TagString: Untagged
@@ -108,5 +109,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59ca48b007b7a1e43aee0e8aa2ef04e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6883367257295440404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5915842812121704431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f685b5c252d5843ae1fe44cc251c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

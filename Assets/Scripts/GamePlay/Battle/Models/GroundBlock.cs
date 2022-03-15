@@ -3,7 +3,7 @@
 public class GroundBlock
 {
     GroundTileComponent gameTile;
-    public GameObject player;
+    public GameObject Player { set; get; }
     public readonly int x;
     public readonly int y;
 

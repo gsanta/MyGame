@@ -4,15 +4,17 @@ public class CanvasController : MonoBehaviour
 {
     [SerializeField] private GameObject startLevelModal;
     private BattleGridSetup battleGridSetup;
-    private PuzzleManager levelGuilderSetup;
+    private PuzzleManager puzzleManager;
     private PlayersSetup playerSetup;
     private GenericGrid<PuzzleBlock> grid;
-    public void Construct(BattleGridSetup battleGridSetup, PuzzleManager levelGuilderSetup, GenericGrid<PuzzleBlock> grid, PlayersSetup playerSetup)
+    private SelectionController selectionController;
+    public void Construct(BattleGridSetup battleGridSetup, PuzzleManager puzzleManager, GenericGrid<PuzzleBlock> grid, PlayersSetup playerSetup, SelectionController selectionController)
     {
         this.battleGridSetup = battleGridSetup;
-        this.levelGuilderSetup = levelGuilderSetup;
+        this.puzzleManager = puzzleManager;
         this.playerSetup = playerSetup;
         this.grid = grid;
+        this.selectionController = selectionController;
     }
     public void EndSetupLevel()
     {
@@ -22,8 +24,9 @@ public class CanvasController : MonoBehaviour
     public void StartLevel()
     {
         startLevelModal.SetActive(false);
-        var gameGrid = battleGridSetup.Create(grid);
-        levelGuilderSetup.TearDown();
-        playerSetup.Setup(gameGrid);
+        var battleGrid = battleGridSetup.Create(grid);
+        puzzleManager.TearDown();
+        playerSetup.Setup(battleGrid);
+        selectionController.SetGrid(battleGrid);
     }
 }

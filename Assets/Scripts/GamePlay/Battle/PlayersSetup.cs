@@ -12,9 +12,9 @@ public class PlayersSetup : MonoBehaviour
         while (counter > 0)
         {
             var gameBlock = GetRandomBlock(grid);
-            if (gameBlock.player == null)
+            if (gameBlock.Player == null)
             {
-                gameBlock.player = CreatePlayer(grid, gameBlock);
+                gameBlock.Player = CreatePlayer(grid, gameBlock);
                 counter--;
             }
         }
