@@ -15,6 +15,7 @@ class Injector : MonoBehaviour
     [SerializeField] private BattleGridSetup battleGridSetup;
     [SerializeField] private PlayersSetup playerSetup;
     [SerializeField] private SelectionController selectionController;
+    [SerializeField] private SurfaceComponent surfaceComponent;
 
     private PuzzleManager puzzleManager;
 
@@ -28,7 +29,7 @@ class Injector : MonoBehaviour
         previewController.Construct(grid, puzzleGridSetup);
         proceduralMeshFactory.Construct(grid, dropController, previewController);
         dragController.Construct(dropController, previewController, proceduralMeshFactory, grid, canvasController);
-        battleGridSetup.Construct(groundTileFactory);
+        battleGridSetup.Construct(groundTileFactory, surfaceComponent);
         puzzleManager = new PuzzleManager(gridLineRenderer, puzzleGridSetup, dragController, puzzlePanelController, grid);
         canvasController.Construct(battleGridSetup, puzzleManager, grid, playerSetup, selectionController);
         dragController.Init();

@@ -5,7 +5,7 @@ public class GenericGrid<TGridObject>
 {
     public readonly int width;
     public readonly int height;
-    private float cellSize;
+    public float cellSize;
     private TGridObject[,] gridArray;
     private Vector3 originPosition;
     private Vector3 worldSize;
@@ -53,13 +53,6 @@ public class GenericGrid<TGridObject>
         {
             gridArray[x, y] = value;
         }
-    }
-
-    public void SetValue(Vector3 worldPosition, TGridObject value)
-    {
-        int x, y;
-        GetXY(worldPosition, out x, out y);
-        SetValue(x, y, value);
     }
 
     public TGridObject GetGridObject(Vector3 worldPosition)

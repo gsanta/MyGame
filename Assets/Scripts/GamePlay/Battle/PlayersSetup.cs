@@ -1,32 +1,84 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayersSetup : MonoBehaviour
 {
-    [SerializeField] private GameObject playerPrefab;
-    private int maxPlayers = 3;
+    [SerializeField] private GameObject acrobatPrefab;
+    [SerializeField] private GameObject musicianPrefab;
+    [SerializeField] private GameObject balloonPrefab;
+
+    private List<PlayerData> players = new List<PlayerData> {
+        new PlayerData(PlayerType.Acrobat, true),
+        new PlayerData(PlayerType.Musician, true),
+        new PlayerData(PlayerType.Balloon, true),
+    };
+
+    private List<PlayerData> enemies = new List<PlayerData> {
+        new PlayerData(PlayerType.Acrobat, false),
+        new PlayerData(PlayerType.Musician, false),
+        new PlayerData(PlayerType.Balloon, false),
+    };
 
     public void Setup(GenericGrid<GroundBlock> grid)
     {
-        int counter = maxPlayers;
-
-        while (counter > 0)
+        players.ForEach(player =>
         {
-            var gameBlock = GetRandomBlock(grid);
-            if (gameBlock.Player == null)
-            {
-                gameBlock.Player = CreatePlayer(grid, gameBlock);
-                counter--;
-            }
-        }
+            CreatePlayer(grid, player);
+        });
+
+        enemies.ForEach(player =>
+        {
+            CreatePlayer(grid, player);
+        });
     }
 
-    private GameObject CreatePlayer(GenericGrid<GroundBlock> grid, GroundBlock block)
+    private GameObject CreatePlayer(GenericGrid<GroundBlock> grid, PlayerData player)
     {
+        GroundBlock block;
+
+        do
+        {
+            block = GetRandomBlock(grid);
+        } while (block.Player != null);
+
         var position = grid.GetWorldPosition(block.x, block.y);
-        var player = Instantiate(playerPrefab, position, playerPrefab.transform.rotation, transform);
-        var halfHeight = player.GetComponent<Renderer>().bounds.size.y / 2;
-        player.transform.Translate(new Vector3(0, halfHeight, 0));
-        return player;
+        var gameObject = CreateGameObject(player, position);
+        gameObject.SetActive(true);
+
+
+        var halfBlockHeight = block.block.gameObject.GetComponent<Renderer>().bounds.size.y / 2;
+        var halfPlayerHeight = gameObject.GetComponent<Renderer>().bounds.size.y / 2;
+        gameObject.transform.Translate(new Vector3(0, 0, -(halfPlayerHeight + halfBlockHeight)));
+        gameObject.GetComponent<MoveComponent>().Construct(grid);
+
+        block.Player = gameObject;
+
+        return gameObject;
+    }
+
+    private GameObject CreateGameObject(PlayerData player, Vector3 position)
+    {
+        GameObject gameObject = null;
+
+        switch(player.type)
+        {
+            case PlayerType.Balloon:
+                gameObject = Instantiate(balloonPrefab, position, balloonPrefab.transform.rotation, transform);
+                break;
+            case PlayerType.Acrobat:
+                gameObject = Instantiate(acrobatPrefab, position, balloonPrefab.transform.rotation, transform);
+                break;
+            case PlayerType.Musician:
+                gameObject = Instantiate(musicianPrefab, position, balloonPrefab.transform.rotation, transform);
+                break;
+        }
+
+        if (gameObject != null && player.isEnemy)
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.black;
+        }
+
+        return gameObject;
     }
 
     private GroundBlock GetRandomBlock(GenericGrid<GroundBlock> grid)

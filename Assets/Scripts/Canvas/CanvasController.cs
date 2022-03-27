@@ -24,7 +24,7 @@ public class CanvasController : MonoBehaviour
     public void StartLevel()
     {
         startLevelModal.SetActive(false);
-        var battleGrid = battleGridSetup.Create(grid);
+        var battleGrid = battleGridSetup.Setup(grid);
         puzzleManager.TearDown();
         playerSetup.Setup(battleGrid);
         selectionController.SetGrid(battleGrid);
