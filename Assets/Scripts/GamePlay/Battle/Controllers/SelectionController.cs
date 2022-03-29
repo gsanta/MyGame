@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SelectionController : MonoBehaviour
 {
-    private Dictionary<GroundBlock, GroundBlock> movements = new Dictionary<GroundBlock, GroundBlock>();
     private GroundBlock from;
     private GroundBlock to;
     private GenericGrid<GroundBlock> grid;
@@ -24,15 +22,20 @@ public class SelectionController : MonoBehaviour
                 return;
             }
 
+            if (groundBlock.Item && groundBlock.Item.isEnemy)
+            {
+                return;
+            }
+
             var selectionComponent = groundBlock.block.GetComponent<SelectionComponent>();
 
-            if (from != null && !groundBlock.Player)
+            if (from != null && !groundBlock.Item)
             {
                 to = groundBlock;
                 selectionComponent.SetSelected(true);
             }
 
-            if (from == null && groundBlock.Player)
+            if (from == null && groundBlock.Item)
             {
                 from = groundBlock;
                 selectionComponent.SetSelected(true);
@@ -40,7 +43,7 @@ public class SelectionController : MonoBehaviour
 
             if (from != null && to != null)
             {
-                from.Player.GetComponent<MoveComponent>().SetDestination(to.block.transform.position, 2f);
+                from.Item.GetComponent<MoveComponent>().SetDestination(to.block.transform.position, 2f);
                 from.block.GetComponent<SelectionComponent>().SetSelected(false);
                 to.block.GetComponent<SelectionComponent>().SetSelected(false);
                 from = null;
@@ -101,20 +104,4 @@ public class SelectionController : MonoBehaviour
     {
         return (Input.GetAxis("Mouse X") != 0) || (Input.GetAxis("Mouse Y") != 0);
     }
-
-    private void SaveMovement()
-    {
-        //movements.getk
-    }
-
-    //private GroundBlock GetBlock(Transform transform)
-    //{
-    //    return grid.GetGridObject(transform.position);
-    //}
-
-    //private bool HasPlayer(Transform transform)
-    //{
-    //    var gridObject = GetBlock(transform);
-    //    return gridObject != null && gridObject.Player;
-    //}
 }

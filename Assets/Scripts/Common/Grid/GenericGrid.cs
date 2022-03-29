@@ -10,7 +10,7 @@ public class GenericGrid<TGridObject>
     private Vector3 originPosition;
     private Vector3 worldSize;
 
-    public GenericGrid(int width, int height, float cellSize, Vector3 originPosition, Func<int, int, TGridObject> createGridObject)
+    public GenericGrid(int width, int height, float cellSize, Vector3 originPosition, Func<GenericGrid<TGridObject>, int, int, TGridObject> createGridObject)
     {
         this.originPosition = originPosition;
         this.width = width;
@@ -24,7 +24,7 @@ public class GenericGrid<TGridObject>
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-                gridArray[x, y] = createGridObject(x, y);
+                gridArray[x, y] = createGridObject(this, x, y);
             }
         }
     }

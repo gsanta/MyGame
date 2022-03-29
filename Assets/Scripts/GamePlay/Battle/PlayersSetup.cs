@@ -7,42 +7,39 @@ public class PlayersSetup : MonoBehaviour
     [SerializeField] private GameObject musicianPrefab;
     [SerializeField] private GameObject balloonPrefab;
 
-    private List<PlayerData> players = new List<PlayerData> {
-        new PlayerData(PlayerType.Acrobat, true),
-        new PlayerData(PlayerType.Musician, true),
-        new PlayerData(PlayerType.Balloon, true),
+    private List<ItemType> players = new List<ItemType> {
+        ItemType.Acrobat, ItemType.Musician, ItemType.Balloon
     };
 
-    private List<PlayerData> enemies = new List<PlayerData> {
-        new PlayerData(PlayerType.Acrobat, false),
-        new PlayerData(PlayerType.Musician, false),
-        new PlayerData(PlayerType.Balloon, false),
+    private List<ItemType> enemies = new List<ItemType> {
+        ItemType.Acrobat, ItemType.Musician, ItemType.Balloon
     };
 
     public void Setup(GenericGrid<GroundBlock> grid)
     {
         players.ForEach(player =>
         {
-            CreatePlayer(grid, player);
+            CreatePlayer(grid, player, false);
         });
 
         enemies.ForEach(player =>
         {
-            CreatePlayer(grid, player);
+            CreatePlayer(grid, player, true);
         });
     }
 
-    private GameObject CreatePlayer(GenericGrid<GroundBlock> grid, PlayerData player)
+    private GameObject CreatePlayer(GenericGrid<GroundBlock> grid, ItemType itemType, bool isEnemy)
     {
         GroundBlock block;
 
         do
         {
             block = GetRandomBlock(grid);
-        } while (block.Player != null);
+        } while (block.Item != null);
 
         var position = grid.GetWorldPosition(block.x, block.y);
-        var gameObject = CreateGameObject(player, position);
+        var itemComponent = CreateGameObject(itemType, position, isEnemy);
+        var gameObject = itemComponent.gameObject;
         gameObject.SetActive(true);
 
 
@@ -51,34 +48,36 @@ public class PlayersSetup : MonoBehaviour
         gameObject.transform.Translate(new Vector3(0, 0, -(halfPlayerHeight + halfBlockHeight)));
         gameObject.GetComponent<MoveComponent>().Construct(grid);
 
-        block.Player = gameObject;
+        block.Item = itemComponent;
 
         return gameObject;
     }
 
-    private GameObject CreateGameObject(PlayerData player, Vector3 position)
+    private ItemComponent CreateGameObject(ItemType itemType, Vector3 position, bool isEnemy)
     {
         GameObject gameObject = null;
 
-        switch(player.type)
+        switch(itemType)
         {
-            case PlayerType.Balloon:
+            case ItemType.Balloon:
                 gameObject = Instantiate(balloonPrefab, position, balloonPrefab.transform.rotation, transform);
                 break;
-            case PlayerType.Acrobat:
+            case ItemType.Acrobat:
                 gameObject = Instantiate(acrobatPrefab, position, balloonPrefab.transform.rotation, transform);
                 break;
-            case PlayerType.Musician:
+            case ItemType.Musician:
                 gameObject = Instantiate(musicianPrefab, position, balloonPrefab.transform.rotation, transform);
                 break;
         }
 
-        if (gameObject != null && player.isEnemy)
+        if (gameObject != null && isEnemy)
         {
             gameObject.GetComponent<Renderer>().material.color = Color.black;
         }
 
-        return gameObject;
+        var itemComponent = gameObject.GetComponent<ItemComponent>();
+        itemComponent.isEnemy = isEnemy;
+        return itemComponent;
     }
 
     private GroundBlock GetRandomBlock(GenericGrid<GroundBlock> grid)

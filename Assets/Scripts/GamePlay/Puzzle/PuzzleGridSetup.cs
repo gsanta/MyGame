@@ -12,7 +12,7 @@ public class PuzzleGridSetup : MonoBehaviour
 
     public GenericGrid<PuzzleBlock> CreateGrid()
     {
-        return new GenericGrid<PuzzleBlock>(width, height, cellSize, originPosition.transform.position, (int x, int y) => new PuzzleBlock(x, y, 0, null));
+        return new GenericGrid<PuzzleBlock>(width, height, cellSize, originPosition.transform.position, (GenericGrid<PuzzleBlock> grid, int x, int y) => new PuzzleBlock(x, y, 0, null));
     }
 
     public void DestroyGrid(GenericGrid<PuzzleBlock> grid)

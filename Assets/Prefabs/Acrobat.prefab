@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6438350515267589253}
   - component: {fileID: 6438350515267589250}
   - component: {fileID: 1405759310}
+  - component: {fileID: 2964342343654604496}
   m_Layer: 0
   m_Name: Acrobat
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &6438350515267589252
 MeshFilter:
@@ -111,3 +112,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 079490e3e39bd1b4ca4e78925e78ffaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2964342343654604496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6438350515267589248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4607f41adb989344e80e322ff1d827a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 2
+  isEnemy: 0

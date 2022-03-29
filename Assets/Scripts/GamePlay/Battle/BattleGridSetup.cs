@@ -47,6 +47,6 @@ public class BattleGridSetup : MonoBehaviour
     private GenericGrid<GroundBlock> CreateGameGrid(int width, int height)
     {
         var origin = originPosition.transform.position + new Vector3(cellSize / 2, cellSize / 2, 0);
-        return new GenericGrid<GroundBlock>(width, height, cellSize, origin, (int x, int y) => new GroundBlock(x, y, null));
+        return new GenericGrid<GroundBlock>(width, height, cellSize, origin, (GenericGrid<GroundBlock> grid, int x, int y) => new GroundBlock(x, y, null));
     }
 }

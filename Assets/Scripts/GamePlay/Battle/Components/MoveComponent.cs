@@ -31,7 +31,7 @@ public class MoveComponent : MonoBehaviour
         timeToReachTarget = time;
         target = dest;
 
-        grid.GetGridObject(startPosition).Player = null;
-        grid.GetGridObject(target).Player = gameObject;
+        grid.GetGridObject(startPosition).Item = null;
+        grid.GetGridObject(target).Item = gameObject.GetComponent<ItemComponent>();
     }
 }
