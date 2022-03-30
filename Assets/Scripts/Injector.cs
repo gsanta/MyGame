@@ -14,7 +14,7 @@ class Injector : MonoBehaviour
     [SerializeField] private GroundTileFactory groundTileFactory;
     [SerializeField] private BattleGridSetup battleGridSetup;
     [SerializeField] private PlayersSetup playerSetup;
-    [SerializeField] private SelectionController selectionController;
+    [SerializeField] private Hover selectionController;
     [SerializeField] private SurfaceComponent surfaceComponent;
 
     private PuzzleManager puzzleManager;

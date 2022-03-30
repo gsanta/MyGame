@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class SelectionController : MonoBehaviour
+public class Hover : GridSelector
 {
-    private GroundBlock from;
-    private GroundBlock to;
+    //private GroundBlock from;
+    //private GroundBlock to;
     private GenericGrid<GroundBlock> grid;
     private SelectionComponent hovered;
     public void SetGrid(GenericGrid<GroundBlock> grid)
@@ -13,43 +13,43 @@ public class SelectionController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            var groundBlock = GetGroundBlockAtMousePosition();
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    var groundBlock = GetGroundBlockAtMousePosition();
 
-            if (groundBlock == null)
-            {
-                return;
-            }
+        //    if (groundBlock == null)
+        //    {
+        //        return;
+        //    }
 
-            if (groundBlock.Item && groundBlock.Item.isEnemy)
-            {
-                return;
-            }
+        //    if (groundBlock.Item && groundBlock.Item.isEnemy)
+        //    {
+        //        return;
+        //    }
 
-            var selectionComponent = groundBlock.block.GetComponent<SelectionComponent>();
+        //    var selectionComponent = groundBlock.block.GetComponent<SelectionComponent>();
 
-            if (from != null && !groundBlock.Item)
-            {
-                to = groundBlock;
-                selectionComponent.SetSelected(true);
-            }
+        //    if (from != null && !groundBlock.Item)
+        //    {
+        //        to = groundBlock;
+        //        selectionComponent.SetSelected(true);
+        //    }
 
-            if (from == null && groundBlock.Item)
-            {
-                from = groundBlock;
-                selectionComponent.SetSelected(true);
-            }
+        //    if (from == null && groundBlock.Item)
+        //    {
+        //        from = groundBlock;
+        //        selectionComponent.SetSelected(true);
+        //    }
 
-            if (from != null && to != null)
-            {
-                from.Item.GetComponent<MoveComponent>().SetDestination(to.block.transform.position, 2f);
-                from.block.GetComponent<SelectionComponent>().SetSelected(false);
-                to.block.GetComponent<SelectionComponent>().SetSelected(false);
-                from = null;
-                to = null;
-            }
-        }
+        //    if (from != null && to != null)
+        //    {
+        //        from.Item.GetComponent<MoveComponent>().SetDestination(to.block.transform.position, 2f);
+        //        from.block.GetComponent<SelectionComponent>().SetSelected(false);
+        //        to.block.GetComponent<SelectionComponent>().SetSelected(false);
+        //        from = null;
+        //        to = null;
+        //    }
+        //}
 
         if (HasMouseMoved())
         {

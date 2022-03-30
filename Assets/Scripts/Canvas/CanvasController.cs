@@ -7,8 +7,8 @@ public class CanvasController : MonoBehaviour
     private PuzzleManager puzzleManager;
     private PlayersSetup playerSetup;
     private GenericGrid<PuzzleBlock> grid;
-    private SelectionController selectionController;
-    public void Construct(BattleGridSetup battleGridSetup, PuzzleManager puzzleManager, GenericGrid<PuzzleBlock> grid, PlayersSetup playerSetup, SelectionController selectionController)
+    private Hover selectionController;
+    public void Construct(BattleGridSetup battleGridSetup, PuzzleManager puzzleManager, GenericGrid<PuzzleBlock> grid, PlayersSetup playerSetup, Hover selectionController)
     {
         this.battleGridSetup = battleGridSetup;
         this.puzzleManager = puzzleManager;
