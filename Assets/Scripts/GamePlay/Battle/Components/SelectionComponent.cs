@@ -18,6 +18,7 @@ public class SelectionComponent : MonoBehaviour
         var renderer = transform.gameObject.GetComponent<Renderer>();
         if (isSelected)
         {
+            IsHovered = false;
             renderer.material.color = Color.black;
         } else
         {

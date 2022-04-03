@@ -7,14 +7,15 @@ public class CanvasController : MonoBehaviour
     private PuzzleManager puzzleManager;
     private PlayersSetup playerSetup;
     private GenericGrid<PuzzleBlock> grid;
-    private Hover selectionController;
-    public void Construct(BattleGridSetup battleGridSetup, PuzzleManager puzzleManager, GenericGrid<PuzzleBlock> grid, PlayersSetup playerSetup, Hover selectionController)
+    private BattleTask battleTask;
+
+    public void Construct(BattleGridSetup battleGridSetup, PuzzleManager puzzleManager, GenericGrid<PuzzleBlock> grid, PlayersSetup playerSetup, BattleTask battleTask)
     {
         this.battleGridSetup = battleGridSetup;
         this.puzzleManager = puzzleManager;
         this.playerSetup = playerSetup;
         this.grid = grid;
-        this.selectionController = selectionController;
+        this.battleTask = battleTask;
     }
     public void EndSetupLevel()
     {
@@ -27,6 +28,6 @@ public class CanvasController : MonoBehaviour
         var battleGrid = battleGridSetup.Setup(grid);
         puzzleManager.TearDown();
         playerSetup.Setup(battleGrid);
-        selectionController.SetGrid(battleGrid);
+        battleTask.SetActive(true);
     }
 }

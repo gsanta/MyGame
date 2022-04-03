@@ -2,14 +2,15 @@
 
 public class GridSelector : MonoBehaviour
 {
-    protected GenericGrid<GroundBlock> grid;
-    public void SetGrid(GenericGrid<GroundBlock> grid)
+    protected GridStore gridStore;
+    public void Construct(GridStore gridStore)
     {
-        this.grid = grid;
+        this.gridStore = gridStore;
     }
 
     protected GroundBlock GetGroundBlockAtMousePosition()
     {
+        var grid = gridStore.grid;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         LayerMask mask = LayerMask.GetMask("Ground");
         RaycastHit hit;

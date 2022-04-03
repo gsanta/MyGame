@@ -6,17 +6,21 @@ public class BattleGridSetup : MonoBehaviour
     [SerializeField] private GameObject originPosition;
     private GroundTileFactory groundTileFactory;
     private SurfaceComponent surfaceComponent;
+    private GridStore gridStore;
 
-    public void Construct(GroundTileFactory groundTileFactory, SurfaceComponent surfaceComponent)
+    public void Construct(GroundTileFactory groundTileFactory, SurfaceComponent surfaceComponent, GridStore gridStore)
     {
         this.groundTileFactory = groundTileFactory;
         this.surfaceComponent = surfaceComponent;
+        this.gridStore = gridStore;
     }
 
     public GenericGrid<GroundBlock> Setup(GenericGrid<PuzzleBlock> setupGrid)
     {
         surfaceComponent.SetSize(setupGrid.width, setupGrid.height, cellSize);
-        return Create(setupGrid);
+        var grid = Create(setupGrid);
+        gridStore.grid = grid;
+        return grid;
     }
 
     private GenericGrid<GroundBlock> Create(GenericGrid<PuzzleBlock> setupGrid)
