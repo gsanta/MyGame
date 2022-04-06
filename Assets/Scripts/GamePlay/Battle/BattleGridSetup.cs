@@ -19,7 +19,8 @@ public class BattleGridSetup : MonoBehaviour
     {
         surfaceComponent.SetSize(setupGrid.width, setupGrid.height, cellSize);
         var grid = Create(setupGrid);
-        gridStore.grid = grid;
+        gridStore.SetGrid(grid);
+        gridStore.SetPathGrid(CreatePathGrid(grid));
         return grid;
     }
 
@@ -46,6 +47,26 @@ public class BattleGridSetup : MonoBehaviour
         }
 
         return grid;
+    }
+
+    private GenericGrid<PathNode> CreatePathGrid(GenericGrid<GroundBlock> grid)
+    {
+        var pathGrid = new GenericGrid<PathNode>(grid.width, grid.height, cellSize, grid.originPosition, (GenericGrid<PathNode> grid, int x, int y) => new PathNode(grid, x, y));
+
+        for (int i = 0; i < grid.width; i++)
+        {
+            for (int j = 0; j < grid.height; j++)
+            {
+                var block = grid.GetGridObject(i, j);
+
+                if (block.Item != null)
+                {
+                    pathGrid.GetGridObject(i, j).isWalkable = false;
+                }
+            }
+        }
+
+        return pathGrid;
     }
 
     private GenericGrid<GroundBlock> CreateGameGrid(int width, int height)

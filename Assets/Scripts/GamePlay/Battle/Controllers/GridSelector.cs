@@ -10,7 +10,7 @@ public class GridSelector : MonoBehaviour
 
     protected GroundBlock GetGroundBlockAtMousePosition()
     {
-        var grid = gridStore.grid;
+        var grid = gridStore.GetGrid();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         LayerMask mask = LayerMask.GetMask("Ground");
         RaycastHit hit;

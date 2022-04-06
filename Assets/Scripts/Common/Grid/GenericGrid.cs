@@ -7,7 +7,7 @@ public class GenericGrid<TGridObject>
     public readonly int height;
     public float cellSize;
     private TGridObject[,] gridArray;
-    private Vector3 originPosition;
+    public Vector3 originPosition;
     private Vector3 worldSize;
 
     public GenericGrid(int width, int height, float cellSize, Vector3 originPosition, Func<GenericGrid<TGridObject>, int, int, TGridObject> createGridObject)

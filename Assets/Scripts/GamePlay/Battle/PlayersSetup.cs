@@ -6,6 +6,7 @@ public class PlayersSetup : MonoBehaviour
     [SerializeField] private GameObject acrobatPrefab;
     [SerializeField] private GameObject musicianPrefab;
     [SerializeField] private GameObject balloonPrefab;
+    private CharacterStore characterStore;
 
     private List<ItemType> players = new List<ItemType> {
         ItemType.Acrobat, ItemType.Musician, ItemType.Balloon
@@ -14,6 +15,11 @@ public class PlayersSetup : MonoBehaviour
     private List<ItemType> enemies = new List<ItemType> {
         ItemType.Acrobat, ItemType.Musician, ItemType.Balloon
     };
+
+    public void Construct(CharacterStore characterStore)
+    {
+        this.characterStore = characterStore;
+    }
 
     public void Setup(GenericGrid<GroundBlock> grid)
     {
@@ -37,8 +43,7 @@ public class PlayersSetup : MonoBehaviour
             block = GetRandomBlock(grid);
         } while (block.Item != null);
 
-        var position = grid.GetWorldPosition(block.x, block.y);
-        var itemComponent = CreateGameObject(itemType, position, isEnemy);
+        var itemComponent = CreateGameObject(grid, itemType, block, isEnemy);
         var gameObject = itemComponent.gameObject;
         gameObject.SetActive(true);
 
@@ -50,11 +55,15 @@ public class PlayersSetup : MonoBehaviour
 
         block.Item = itemComponent;
 
+        characterStore.AddItem(itemComponent);
+
         return gameObject;
     }
 
-    private ItemComponent CreateGameObject(ItemType itemType, Vector3 position, bool isEnemy)
+    private ItemComponent CreateGameObject(GenericGrid<GroundBlock> grid, ItemType itemType, GroundBlock block, bool isEnemy)
     {
+        var position = grid.GetWorldPosition(block.x, block.y);
+
         GameObject gameObject = null;
 
         switch(itemType)
@@ -77,6 +86,7 @@ public class PlayersSetup : MonoBehaviour
 
         var itemComponent = gameObject.GetComponent<ItemComponent>();
         itemComponent.isEnemy = isEnemy;
+        itemComponent.block = block;
         return itemComponent;
     }
 

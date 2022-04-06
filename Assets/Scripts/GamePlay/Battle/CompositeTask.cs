@@ -1,6 +1,6 @@
 ﻿using System;
 
-public abstract class CompositeTask : ITask
+public class CompositeTask : ITask
 {
     protected ITask[] subTasks;
     protected ITask activeSubTask;

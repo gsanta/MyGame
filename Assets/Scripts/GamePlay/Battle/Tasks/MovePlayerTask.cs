@@ -1,18 +1,28 @@
-﻿
-public class MovePlayerTask : CompositeTask
+﻿using System;
+
+public class MovePlayerTask : ITask
 {
     private MovementStore movementStore;
+    private Action finishedCallback;
 
     public MovePlayerTask(MovementStore movementStore)
     {
         this.movementStore = movementStore;
     }
 
-    protected override void OnAllSubTasksFinished()
+    public void OnFinished(Action callback)
     {
-        var from = movementStore.from;
-        var to = movementStore.to;
-        from.Item.GetComponent<MoveComponent>().SetDestination(to.block.transform.position, 2f, FinishMovement);
+        finishedCallback = callback;
+    }
+
+    public void SetActive(bool isActive)
+    {
+        if (isActive)
+        {
+            var from = movementStore.from;
+            var to = movementStore.to;
+            from.Item.GetComponent<MoveComponent>().SetDestination(to.block.transform.position, 2f, FinishMovement);
+        }
     }
 
     private void FinishMovement()
@@ -25,6 +35,6 @@ public class MovePlayerTask : CompositeTask
 
         movementStore.from = null;
         movementStore.to = null;
-        base.OnAllSubTasksFinished();
+        finishedCallback();
     }
 }
