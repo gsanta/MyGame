@@ -51,7 +51,7 @@ public class PreviewController : MonoBehaviour
 
         foreach (var position in positions)
         {
-            var tile = gridFactory.CreateTile(grid, position.x, position.y);
+            var tile = gridFactory.CreateHighlightTile(grid, position.x, position.y);
             tiles.Add(tile);
         }
 

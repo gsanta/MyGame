@@ -1,4 +1,5 @@
 ﻿
+using Puzzle;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,11 +18,13 @@ public class DropController : MonoBehaviour
 {
     private GenericGrid<PuzzleBlock> grid;
     private PuzzleGridSetup gridFactory;
+    private GroundFactory groundFactory;
 
-    public void Construct(GenericGrid<PuzzleBlock> grid, PuzzleGridSetup gridFactory)
+    public void Construct(GenericGrid<PuzzleBlock> grid, PuzzleGridSetup gridFactory, GroundFactory groundFactory)
     {
         this.grid = grid;
         this.gridFactory = gridFactory;
+        this.groundFactory = groundFactory;
     }
 
     public void OnDrop(ShapeComponent shape)
@@ -33,12 +36,17 @@ public class DropController : MonoBehaviour
         }
 
         var positions = shape.GetPositions();
-        foreach (var position in positions)
+
+        for (int i = 0; i < positions.Length; i++)
         {
+            var position = positions[i];
             int x = position.x;
             int y = position.y;
-            var tile = gridFactory.CreateTile(grid, x, y);
-            grid.SetValue(x, y, new PuzzleBlock(x, y, 1, tile));
+            var worldPos = grid.GetWorldPosition(x, y) + new Vector3(4.0f, 4.0f, 0);
+            var transform = shape.transform.GetChild(i);
+            var type = transform.GetComponent<Ground>().type;
+            var gameObject = groundFactory.Create(type, worldPos);
+            grid.SetValue(x, y, new PuzzleBlock(x, y, 1, gameObject));
         }
 
         List<int> fullRows = new List<int>();

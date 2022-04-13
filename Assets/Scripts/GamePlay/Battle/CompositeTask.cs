@@ -17,7 +17,7 @@ public class CompositeTask : ITask
             if (activeSubTask != null)
             {
                 activeSubTask.SetActive(false);
-                activeSubTask = null;
+                activeSubTask = subTasks[0];
             }
         }
     }
@@ -45,11 +45,8 @@ public class CompositeTask : ITask
 
     protected virtual void OnAllSubTasksFinished()
     {
-        this.SetActive(false);
-        if (taskFinishedAction != null)
-        {
-            taskFinishedAction();
-        }
+        SetActive(false);
+        taskFinishedAction?.Invoke();
     }
 
     public void OnFinished(Action action)

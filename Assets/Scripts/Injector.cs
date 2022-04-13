@@ -1,4 +1,5 @@
 ﻿
+using Puzzle;
 using UnityEngine;
 
 class Injector : MonoBehaviour
@@ -19,6 +20,7 @@ class Injector : MonoBehaviour
     [SerializeField] private SelectPlayerWithMouseTask selectPlayerWithMouseTask;
     [SerializeField] private DelayTask delayTask;
     [SerializeField] private SurfaceComponent surfaceComponent;
+    [SerializeField] private GroundFactory groundFactory;
 
     private SelectEnemyTask selectEnemyTask;
     private SelectEnemyPathTask selectEnemyPathTask;
@@ -26,8 +28,9 @@ class Injector : MonoBehaviour
     private MovementStore movementStore;
     private CharacterStore characterStore;
     private CompositeTask moveCharacterTask;
-    private CompositeTask moveEnemyTask;
+    private CompositeTask enemyTurnTask;
     private MovePlayerTask movePlayerTask;
+    private MovePlayerTask moveEnemyTask;
     private GridStore gridStore;
 
     private PuzzleManager puzzleManager;
@@ -43,9 +46,9 @@ class Injector : MonoBehaviour
 
         grid = puzzleGridSetup.CreateGrid();
         gridLineRenderer.Construct(grid);
-        dropController.Construct(grid, puzzleGridSetup);
+        dropController.Construct(grid, puzzleGridSetup, groundFactory);
         previewController.Construct(grid, puzzleGridSetup);
-        proceduralMeshFactory.Construct(grid, dropController, previewController);
+        proceduralMeshFactory.Construct(grid, dropController, previewController, groundFactory);
         dragController.Construct(dropController, previewController, proceduralMeshFactory, grid, canvasController);
         battleGridSetup.Construct(groundTileFactory, surfaceComponent, gridStore);
         puzzleManager = new PuzzleManager(gridLineRenderer, puzzleGridSetup, dragController, puzzlePanelController, grid);
@@ -63,10 +66,11 @@ class Injector : MonoBehaviour
 
         selectEnemyTask = new SelectEnemyTask(characterStore);
         selectEnemyPathTask = new SelectEnemyPathTask(gridStore, characterStore, movementStore);
-        moveEnemyTask = new CompositeTask();
-        moveEnemyTask.SubTasks(new ITask[] { selectEnemyTask, selectEnemyPathTask, movePlayerTask });
+        enemyTurnTask = new CompositeTask();
+        moveEnemyTask = new MovePlayerTask(movementStore);
+        enemyTurnTask.SubTasks(new ITask[] { selectEnemyTask, selectEnemyPathTask, moveEnemyTask });
 
-        battleTask.SubTasks(new ITask[] { moveCharacterTask, moveEnemyTask });
+        battleTask.SubTasks(new ITask[] { moveCharacterTask, enemyTurnTask });
         moveCharacterTask.SubTasks(new ITask[] { selectPlayerWithMouseTask, delayTask, selectDestinationWithMouseTask, movePlayerTask });
     }
 }

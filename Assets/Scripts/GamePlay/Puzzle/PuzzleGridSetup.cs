@@ -6,7 +6,8 @@ public class PuzzleGridSetup : MonoBehaviour
     [SerializeField] private int width;
     [SerializeField] private int height;
     [SerializeField] private float cellSize;
-    [SerializeField] private PuzzleTileComponent gridTilePrefab;
+    [SerializeField] private GameObject[] gridTilePrefab;
+    [SerializeField] private PuzzleTileComponent gridHighlightTilePrefab;
     [SerializeField] private GameObject originPosition;
 
 
@@ -31,10 +32,19 @@ public class PuzzleGridSetup : MonoBehaviour
         }
     }
 
-    public PuzzleTileComponent CreateTile(GenericGrid<PuzzleBlock> grid, int xPos, int yPos)
+    public GameObject CreateTile(GenericGrid<PuzzleBlock> grid, int xPos, int yPos)
+    {
+        var worldPos = grid.GetWorldPosition(xPos, yPos) + new Vector3(4.0f, 4.0f, 0);
+        var tile = Instantiate(gridHighlightTilePrefab, worldPos, Quaternion.identity, transform);
+        tile.gameObject.SetActive(true);
+
+        return tile.gameObject;
+    }
+
+    public PuzzleTileComponent CreateHighlightTile(GenericGrid<PuzzleBlock> grid, int xPos, int yPos)
     {
         var worldPos = grid.GetWorldPosition(xPos, yPos);
-        var tile = Instantiate(gridTilePrefab, worldPos, Quaternion.identity, transform);
+        var tile = Instantiate(gridHighlightTilePrefab, worldPos, Quaternion.identity, transform);
         tile.Construct(8.0f);
         tile.gameObject.SetActive(true);
 
