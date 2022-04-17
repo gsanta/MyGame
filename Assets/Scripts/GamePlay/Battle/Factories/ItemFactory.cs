@@ -4,11 +4,10 @@ namespace Battle
 {
     public class ItemFactory : MonoBehaviour
     {
-        [SerializeField] private Material characterMaterialLight;
-        [SerializeField] private Material characterMaterialDark;
+        [SerializeField] private Material[] characterMaterials;
         [SerializeField] private GameObject characterPrefab;
         
-        public ItemComponent Create(ItemType itemType, GroundBlock block, Vector3 position, int teamIndex)
+        public GameObject Create(ItemType itemType, GroundBlock block, Vector3 position, int teamIndex)
         {
             GameObject gameObject = null;
 
@@ -19,15 +18,12 @@ namespace Battle
                     break;
             }
 
-            if (gameObject != null && isEnemy)
-            {
-                gameObject.GetComponent<Renderer>().material.color = Color.black;
-            }
-
+            gameObject.GetComponent<Renderer>().material = characterMaterials[teamIndex];
+            
             var itemComponent = gameObject.GetComponent<ItemComponent>();
-            itemComponent.isEnemy = isEnemy;
             itemComponent.block = block;
-            return itemComponent;
+            itemComponent.teamIndex = teamIndex;
+            return gameObject;
         }
     }
 }

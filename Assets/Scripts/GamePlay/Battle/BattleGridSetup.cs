@@ -52,7 +52,7 @@ public class BattleGridSetup : MonoBehaviour
             {
                 var block = grid.GetGridObject(i, j);
 
-                if (block.Item != null)
+                if (block.item != null)
                 {
                     pathGrid.GetGridObject(i, j).isWalkable = false;
                 }

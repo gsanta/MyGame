@@ -2,15 +2,20 @@
 
 public class GroundBlock
 {
-    public GameObject gameObject;
-    public ItemComponent Item { set; get; }
+    public GameObject ground;
+    public GameObject item;
     public readonly int x;
     public readonly int y;
 
-    public GroundBlock(int x, int y, GameObject gameObject)
+    public GroundBlock(int x, int y, GameObject ground)
     {
-        this.gameObject = gameObject;
+        this.ground = ground;
         this.x = x;
         this.y = y;
+    }
+    
+    public ItemComponent GetItem()
+    {
+        return item != null ? item.GetComponent<ItemComponent>() : null;
     }
 }

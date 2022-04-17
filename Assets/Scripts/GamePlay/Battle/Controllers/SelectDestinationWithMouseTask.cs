@@ -30,7 +30,7 @@ public class SelectDestinationWithMouseTask : GridSelector, ITask
                 return;
             }
 
-            groundBlock.gameObject.GetComponent<SelectionComponent>().SetSelected(true);
+            groundBlock.ground.GetComponent<SelectionComponent>().SetSelected(true);
             movementStore.to = groundBlock;
             taskFinishedAction?.Invoke();
         }

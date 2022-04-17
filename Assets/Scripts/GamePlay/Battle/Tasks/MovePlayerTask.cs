@@ -21,7 +21,7 @@ public class MovePlayerTask : ITask
         {
             var from = movementStore.from;
             var to = movementStore.to;
-            from.Item.GetComponent<MoveComponent>().SetDestination(to.gameObject.transform.position, 2f, FinishMovement);
+            from.item.GetComponent<MoveComponent>().SetDestination(to.ground.transform.position, 2f, FinishMovement);
         }
     }
 
@@ -30,8 +30,8 @@ public class MovePlayerTask : ITask
         var from = movementStore.from;
         var to = movementStore.to;
 
-        from.gameObject.GetComponent<SelectionComponent>().SetSelected(false);
-        to.gameObject.GetComponent<SelectionComponent>().SetSelected(false);
+        from.ground.GetComponent<SelectionComponent>().SetSelected(false);
+        to.ground.GetComponent<SelectionComponent>().SetSelected(false);
 
         movementStore.from = null;
         movementStore.to = null;

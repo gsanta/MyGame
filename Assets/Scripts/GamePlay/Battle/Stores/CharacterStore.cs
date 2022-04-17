@@ -3,26 +3,23 @@
 public class CharacterStore
 {
 
-    public List<ItemComponent> enemies = new List<ItemComponent>();
+    private List<ItemComponent> items = new List<ItemComponent>();
     public ItemComponent activeEnemy;
 
     public void SetNextEnemy()
     {
         if (activeEnemy == null)
         {
-            activeEnemy = enemies[0];
+            activeEnemy = items[0];
         } else
         {
-            activeEnemy = enemies.IndexOf(activeEnemy) == enemies.Count - 1 ? enemies[0] : enemies[enemies.IndexOf(activeEnemy)];
+            activeEnemy = items.IndexOf(activeEnemy) == items.Count - 1 ? items[0] : items[items.IndexOf(activeEnemy)];
         }
     }
 
     public void AddItem(ItemComponent item)
-    {
-        if (item.isEnemy)
-        {
-            enemies.Add(item);
-        }
+    { 
+        items.Add(item);
     }
 
 

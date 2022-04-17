@@ -25,38 +25,37 @@ public class PlayersSetup : MonoBehaviour
     {
         players.ForEach(player =>
         {
-            CreatePlayer(grid, player, false);
+            CreatePlayer(grid, player, 0);
         });
 
         enemies.ForEach(player =>
         {
-            CreatePlayer(grid, player, true);
+            CreatePlayer(grid, player, 1);
         });
     }
 
-    private GameObject CreatePlayer(GenericGrid<GroundBlock> grid, ItemType itemType, bool isEnemy)
+    private GameObject CreatePlayer(GenericGrid<GroundBlock> grid, ItemType itemType, int teamIndex)
     {
         GroundBlock block;
 
         do
         {
             block = GetRandomBlock(grid);
-        } while (block.Item != null);
+        } while (block.item != null);
 
         var position = grid.GetWorldPosition(block.x, block.y);
-        var itemComponent = itemFactory.Create(itemType, block, position, isEnemy);
-        var gameObject = itemComponent.gameObject;
+        var gameObject = itemFactory.Create(itemType, block, position, teamIndex);
         gameObject.SetActive(true);
 
 
-        var halfBlockHeight = block.gameObject.gameObject.GetComponent<Renderer>().bounds.size.y / 2;
+        var halfBlockHeight = block.ground.gameObject.GetComponent<Renderer>().bounds.size.y / 2;
         var halfPlayerHeight = gameObject.GetComponent<Renderer>().bounds.size.y / 2;
         gameObject.transform.Translate(new Vector3(0, 0, -(halfPlayerHeight + halfBlockHeight)));
         gameObject.GetComponent<MoveComponent>().Construct(grid);
 
-        block.Item = itemComponent;
+        block.item = gameObject;
 
-        characterStore.AddItem(itemComponent);
+        characterStore.AddItem(gameObject.GetComponent<ItemComponent>());
 
         return gameObject;
     }

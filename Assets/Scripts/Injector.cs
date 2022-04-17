@@ -29,6 +29,7 @@ class Injector : MonoBehaviour
     private BattleTask battleTask;
     private MovementStore movementStore;
     private CharacterStore characterStore;
+    private TeamStore teamStore;
     private CompositeTask moveCharacterTask;
     private CompositeTask enemyTurnTask;
     private MovePlayerTask movePlayerTask;
@@ -44,6 +45,7 @@ class Injector : MonoBehaviour
         gridStore = new GridStore();
         movementStore = new MovementStore();
         characterStore = new CharacterStore();
+        teamStore = new TeamStore();
         battleTask = new BattleTask();
 
         grid = puzzleGridSetup.CreateGrid();
@@ -61,7 +63,7 @@ class Injector : MonoBehaviour
 
         hover.Construct(gridStore);
         selectDestinationWithMouseTask.Construct(movementStore, gridStore);
-        selectPlayerWithMouseTask.Construct(movementStore, gridStore);
+        selectPlayerWithMouseTask.Construct(movementStore, gridStore, teamStore);
 
         movePlayerTask = new MovePlayerTask(movementStore);
         moveCharacterTask = new CompositeTask();

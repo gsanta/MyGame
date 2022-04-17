@@ -1,4 +1,5 @@
 ﻿using System;
+using Battle;
 using UnityEngine;
 
 public class SelectPlayerWithMouseTask : GridSelector, ITask
@@ -7,10 +8,12 @@ public class SelectPlayerWithMouseTask : GridSelector, ITask
     public event EventHandler<GroundBlockSelectedEventArgs> PlayerSelected;
     private Action taskFinishedAction;
     private MovementStore movementStore;
+    private TeamStore teamStore;
 
-    public void Construct(MovementStore movementStore, GridStore gridStore)
+    public void Construct(MovementStore movementStore, GridStore gridStore, TeamStore teamStore)
     {
         this.movementStore = movementStore;
+        this.teamStore = teamStore;
         base.Construct(gridStore);
     }
 
@@ -24,12 +27,12 @@ public class SelectPlayerWithMouseTask : GridSelector, ITask
             }
             var groundBlock = GetGroundBlockAtMousePosition();
 
-            if (groundBlock == null && groundBlock.Item.isEnemy)
+            if (groundBlock.item == null || groundBlock.GetItem().teamIndex != teamStore.GetCurrentTeam())
             {
                 return;
             }
 
-            groundBlock.gameObject.GetComponent<SelectionComponent>().SetSelected(true);
+            groundBlock.ground.GetComponent<SelectionComponent>().SetSelected(true);
             movementStore.from = groundBlock;
             taskFinishedAction?.Invoke();
         }

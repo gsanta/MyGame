@@ -34,8 +34,8 @@ public class MoveComponent : MonoBehaviour
         timeToReachTarget = time;
         target = dest;
 
-        grid.GetGridObject(startPosition).Item = null;
-        grid.GetGridObject(target).Item = gameObject.GetComponent<ItemComponent>();
+        grid.GetGridObject(startPosition).item = null;
+        grid.GetGridObject(target).item = gameObject;
         gameObject.GetComponent<ItemComponent>().block = grid.GetGridObject(target);
         Invoke("InvokeCallback", time);
     }
