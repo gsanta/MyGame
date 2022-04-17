@@ -15,7 +15,7 @@ public class ShapeFactory : MonoBehaviour
     private GenericGrid<PuzzleBlock> grid;
     private DropController dropController;
     private PreviewController previewController;
-    private GroundFactory groundFactory;
+    private Puzzle.GroundFactory groundFactory;
 
     private RotateableMeshShape l1Shape;
     private RotateableMeshShape l2Shape;
@@ -30,7 +30,7 @@ public class ShapeFactory : MonoBehaviour
 
     private Dictionary<ShapeType, RotateableMeshShape> shapes = new Dictionary<ShapeType, RotateableMeshShape>();
 
-    public void Construct(GenericGrid<PuzzleBlock> grid, DropController dropController, PreviewController previewController, GroundFactory groundFactory)
+    public void Construct(GenericGrid<PuzzleBlock> grid, DropController dropController, PreviewController previewController, Puzzle.GroundFactory groundFactory)
     {
         this.grid = grid;
         this.dropController = dropController;

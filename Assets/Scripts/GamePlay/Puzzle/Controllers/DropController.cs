@@ -18,9 +18,9 @@ public class DropController : MonoBehaviour
 {
     private GenericGrid<PuzzleBlock> grid;
     private PuzzleGridSetup gridFactory;
-    private GroundFactory groundFactory;
+    private Puzzle.GroundFactory groundFactory;
 
-    public void Construct(GenericGrid<PuzzleBlock> grid, PuzzleGridSetup gridFactory, GroundFactory groundFactory)
+    public void Construct(GenericGrid<PuzzleBlock> grid, PuzzleGridSetup gridFactory, Puzzle.GroundFactory groundFactory)
     {
         this.grid = grid;
         this.gridFactory = gridFactory;

@@ -2,14 +2,14 @@
 
 public class GroundBlock
 {
-    public GroundTileComponent block;
+    public GameObject gameObject;
     public ItemComponent Item { set; get; }
     public readonly int x;
     public readonly int y;
 
-    public GroundBlock(int x, int y, GroundTileComponent block)
+    public GroundBlock(int x, int y, GameObject gameObject)
     {
-        this.block = block;
+        this.gameObject = gameObject;
         this.x = x;
         this.y = y;
     }

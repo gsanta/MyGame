@@ -1,4 +1,5 @@
 ﻿
+using Battle;
 using Puzzle;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ class Injector : MonoBehaviour
     [SerializeField] private PreviewController previewController;
     [SerializeField] private DragController dragController;
     [SerializeField] private CanvasController canvasController;
-    [SerializeField] private GroundTileFactory groundTileFactory;
+    [SerializeField] private GroundFactory battleGroundFactory;
     [SerializeField] private BattleGridSetup battleGridSetup;
     [SerializeField] private PlayersSetup playerSetup;
     [SerializeField] private Hover hover;
@@ -20,7 +21,8 @@ class Injector : MonoBehaviour
     [SerializeField] private SelectPlayerWithMouseTask selectPlayerWithMouseTask;
     [SerializeField] private DelayTask delayTask;
     [SerializeField] private SurfaceComponent surfaceComponent;
-    [SerializeField] private GroundFactory groundFactory;
+    [SerializeField] private Puzzle.GroundFactory groundFactory;
+    [SerializeField] private ItemFactory itemFactory;
 
     private SelectEnemyTask selectEnemyTask;
     private SelectEnemyPathTask selectEnemyPathTask;
@@ -50,10 +52,10 @@ class Injector : MonoBehaviour
         previewController.Construct(grid, puzzleGridSetup);
         proceduralMeshFactory.Construct(grid, dropController, previewController, groundFactory);
         dragController.Construct(dropController, previewController, proceduralMeshFactory, grid, canvasController);
-        battleGridSetup.Construct(groundTileFactory, surfaceComponent, gridStore);
+        battleGridSetup.Construct(battleGroundFactory, surfaceComponent, gridStore);
         puzzleManager = new PuzzleManager(gridLineRenderer, puzzleGridSetup, dragController, puzzlePanelController, grid);
 
-        playerSetup.Construct(characterStore);
+        playerSetup.Construct(characterStore, itemFactory);
         canvasController.Construct(battleGridSetup, puzzleManager, grid, playerSetup, battleTask);
         dragController.Init();
 

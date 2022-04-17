@@ -4,13 +4,13 @@ public class BattleGridSetup : MonoBehaviour
 {
     [SerializeField] private float cellSize;
     [SerializeField] private GameObject originPosition;
-    private GroundTileFactory groundTileFactory;
+    private GroundFactory groundFactory;
     private SurfaceComponent surfaceComponent;
     private GridStore gridStore;
 
-    public void Construct(GroundTileFactory groundTileFactory, SurfaceComponent surfaceComponent, GridStore gridStore)
+    public void Construct(GroundFactory groundFactory, SurfaceComponent surfaceComponent, GridStore gridStore)
     {
-        this.groundTileFactory = groundTileFactory;
+        this.groundFactory = groundFactory;
         this.surfaceComponent = surfaceComponent;
         this.gridStore = gridStore;
     }
@@ -32,17 +32,10 @@ public class BattleGridSetup : MonoBehaviour
         {
             for (int j = 0; j < grid.height; j++)
             {
-                var levelBlock = setupGrid.GetGridObject(i, j);
-                GroundTileComponent tile;
-                if (levelBlock.value == 1)
-                {
-                    tile = groundTileFactory.CreateBlock(GameBlockType.Type1, grid.GetWorldPosition(i, j));
-                } else
-                {
-                    tile = groundTileFactory.CreateBlock(GameBlockType.Type2, grid.GetWorldPosition(i, j));
-                }
-
-                grid.SetValue(i, j, new GroundBlock(i, j, tile));
+                var puzzleBlock = setupGrid.GetGridObject(i, j);
+                var groundType = puzzleBlock.tile ? puzzleBlock.tile.GetComponent<Ground>().type : GroundType.Hell;
+                var ground = groundFactory.Create(groundType, grid.GetWorldPosition(i, j));
+                grid.SetValue(i, j, new GroundBlock(i, j, ground));
             }
         }
 

@@ -14,7 +14,7 @@
                 return;
             }
 
-            var selectionComponent = groundBlock.block.GetComponent<SelectionComponent>();
+            var selectionComponent = groundBlock.gameObject.GetComponent<SelectionComponent>();
 
             if (!selectionComponent.IsHovered)
             {
